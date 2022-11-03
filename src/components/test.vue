@@ -2,6 +2,9 @@
 export default {
   // Properties returned from data() become reactive state
   // and will be exposed on `this`.
+
+  
+
   data() {
     return {
       count: 0,
@@ -64,5 +67,7 @@ export default {
     <p>{{msg}}</p>
     <input v-model="msg">
   </div>
+
+  
   
 </template>

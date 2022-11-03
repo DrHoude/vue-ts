@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import Counter from './Counter.vue'
+import Counter2 from './Counter.vue'
 
 defineProps<{ msg: string }>()
 
@@ -14,9 +14,9 @@ const total = computed(() => c1.value + c2.value + c3.value )
   <h1>{{ msg }}</h1>
 
   <div class="card">
-    <Counter :init-value="c1" @update:value="val => c1 = val"/>
-    <Counter :init-value="c2" @update:value="val => c2 = val"/>
-    <Counter :init-value="c3" @update:value="val => c3 = val"/>
+    <Counter2 :init-value="c1" @update:value="val => c1 = val"/>
+    <Counter2 :init-value="c2" @update:value="val => c2 = val"/>
+    <Counter2 :init-value="c3" @update:value="val => c3 = val"/>
      Sum of counters is: {{ total }}
     <p>
       Edit
