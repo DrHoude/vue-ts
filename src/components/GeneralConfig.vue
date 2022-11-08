@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import RadioCompVue  from './RadioComp.vue';
-import CalendarVue from './Calendar.vue';
+import CalendarVue from './Input.vue';
 
 import { ref } from 'vue';
 
@@ -22,7 +22,7 @@ const type = ref(false)
     </div>
 
     <div>
-        <CalendarVue :showTime="seen" :showMonths="type"/>
+        <!--<CalendarVue :showTime="seen" :showMonths="type"/>-->
 
     </div>
 

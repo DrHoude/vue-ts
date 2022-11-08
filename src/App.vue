@@ -3,9 +3,8 @@
 
 import RadioComp from './components/RadioComp.vue';
 import GeneralConfigVue from './components/GeneralConfig.vue';
-
-import { ref,watch } from 'vue'
-import Test from './components/test comp/test.vue';
+import DatePickerVue from './components/DatePicker.vue';
+import { ref} from 'vue'
 
 const message = ref('mess');
 
@@ -30,18 +29,16 @@ const updateTheme = (event: any) => {
  
   <div class="app">
 
-    <RadioComp name="radio1" theme ="Theme" option1="val1" option2="val2" @radio-click="updateTheme"/>
+    <div>
+      <RadioComp name="radio1" theme ="Theme" option1="val1" option2="val2" @radio-click="updateTheme"/>
+      <GeneralConfigVue/>
+    </div>
 
-    <GeneralConfigVue/>
-
-    
-
-    
+    <div>
+      <DatePickerVue/>
+    </div>
 
   
-
-
-    
   </div>
 
 </template>
@@ -50,8 +47,9 @@ const updateTheme = (event: any) => {
 @import './style.css';
   body{
     background-color: var(--generalBackground);
-    
-    
+  }
 
+  .app {
+    display: flex;
   }
 </style>
