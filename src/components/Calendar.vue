@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import CalendarViewVue from './CalendarView.vue';
+import CalendarViewVue from './test comp/CalendarView.vue';
 
 import CalendarPageVue from './CalendarPage.vue';
 
@@ -11,7 +11,8 @@ import { formatDateFull} from '../utils';
 
 
 const props = defineProps ({
-    showTime: Boolean
+    showTime: Boolean,
+    showMonths: Boolean
 })
 
 const visible = ref(true)
@@ -37,7 +38,7 @@ const visible = ref(true)
     </div>
 
 
-   <CalendarPageVue v-if = "visible" @day-selected="updateCurrentDate"/>
+   <CalendarPageVue v-if = "visible" @day-selected="updateCurrentDate" :showMonths="showMonths"/>
 
 
 

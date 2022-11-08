@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {ref} from 'vue';
 
-import CalendarPageVue from './CalendarPage.vue';
+import CalendarPageVue from '../CalendarPage.vue';
 
 
 
@@ -13,7 +13,7 @@ import CalendarPageVue from './CalendarPage.vue';
 <template>
 
     <div id="container">
-        <CalendarPageVue/>
+            
     </div>
     
 
@@ -27,6 +27,7 @@ import CalendarPageVue from './CalendarPage.vue';
     border: 0.5px solid black;
     min-height: 300px;
     min-width: 300px;
+    
     
 }
 
