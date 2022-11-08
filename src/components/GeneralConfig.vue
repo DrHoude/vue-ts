@@ -6,6 +6,8 @@ import { ref } from 'vue';
 
 const seen = ref(true)
 
+const type = ref(false)
+
 </script>
 
 
@@ -15,12 +17,12 @@ const seen = ref(true)
         <div>
         <h1>General Configuration</h1>
         <RadioCompVue name="radio2" theme ="Show time" option1="Yes" option2="No" @radio-click="seen = !seen"/>
-        <RadioCompVue name="radio3" theme ="Tipe" option1="Day" option2="Month" @radio-click=""/>
+        <RadioCompVue name="radio3" theme ="Type" option1="Day" option2="Month" @radio-click="type = !type"/>
         <RadioCompVue name="radio4" theme ="Mode" option1="Single" option2="Multi" @radio-click=""/>
     </div>
 
     <div>
-        <CalendarVue :showTime="seen"/>
+        <CalendarVue :showTime="seen" :showMonths="type"/>
 
     </div>
 

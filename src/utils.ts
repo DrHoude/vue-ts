@@ -1,6 +1,6 @@
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-const monthsFull = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'dec'];
+const monthsFull = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 console.log(monthsFull.indexOf('November'))
 
@@ -11,6 +11,14 @@ interface Options {
 
 }
 
+export function getMonths() {
+    let arr = [];
+
+    arr = [...months]
+
+    return arr
+}
+
 export function getAllDaysInMonth(date: Date) {
 
     let first = new Date(date.getFullYear(), date.getMonth(), 1)
@@ -19,6 +27,7 @@ export function getAllDaysInMonth(date: Date) {
     let last = new Date(date.getFullYear(), date.getMonth() + 1, 0)
     const lastDate = last.getDate()
     last.setDate(lastDate + (7 - last.getDay())) 
+
     
 
     let arr = [];
@@ -61,29 +70,10 @@ export function formatDateTitle(dateObj:Date, options: Options= {}): string {
     let year, month
     let message = ''
 
-    // if(!nextTime && !previuosTime) {
         year = dateObj.getFullYear()
         month = monthsFull[dateObj.getMonth()]
         message = `${month} ${year}`
-    // }
-   
-    // if(nextTime) {
-    //     month = monthsFull[dateObj.getMonth()+ 1] 
-
-    //     year = (dateObj.getMonth() === 11)? dateObj.getFullYear() + 1 : dateObj.getFullYear();
-
-    //     message = `${month} ${year}`
-    // }
-
-    // if(previuosTime) {
-    //     month = monthsFull[dateObj.getMonth() - 1]
-
-        
-    //     year = (dateObj.getMonth() === 11)? dateObj.getFullYear() - 1 : dateObj.getFullYear();
-
-    //     message = `${month} ${year}`
-    // }
-
+  
     return message
 
 }
