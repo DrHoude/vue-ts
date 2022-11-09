@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, toRefs, watch } from 'vue'
-import { formatDateTitle, getAllDaysInMonth, getMonths} from '../utils';
+import { formatDateTitle, getAllDaysInMonth, getMonths} from '../../utils';
 
 const props = defineProps ({
     showMonths: Boolean

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {ref} from 'vue';
 
-import CalendarPageVue from '../CalendarPage.vue';
+import CalendarPageVue from './CalendarPage.vue';
 
 
 

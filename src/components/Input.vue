@@ -1,9 +1,5 @@
 <script setup lang="ts">
 
-import CalendarViewVue from './test comp/CalendarView.vue';
-
-import CalendarPageVue from './CalendarPage.vue';
-
 import { computed } from '@vue/reactivity';
 import {ref} from 'vue';
 import { formatDateFull} from '../utils';
@@ -12,21 +8,24 @@ import { formatDateFull} from '../utils';
 
 const props = defineProps ({
     showTime: Boolean,
-    showMonths: Boolean
+    showMonths: Boolean,
+    date: Date
 })
 
 const visible = ref(true)
+const currentDate = computed(()=>{
+    return new Date(props.date!)
 
- const currentDate = ref(new Date() )
+})
+console.log(currentDate.value)
 
-
- const currentDateString =  computed(()=> formatDateFull(currentDate.value, {
+const currentDateString =  computed(()=> formatDateFull(currentDate.value, {
     hideTime: !props.showTime
- }));
+}));
  
- const updateCurrentDate = (date: Date) => {
-    currentDate.value = new Date(date)
- }
+// const updateCurrentDate = (date: Date) => {
+//     currentDate.value = new Date(date)
+// }
 
 
  
