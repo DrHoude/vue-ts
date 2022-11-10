@@ -24,6 +24,13 @@ function updateDate(newDate:any) {
 
 }
 
+function showYesterday() {
+
+date.value = new Date(date.value.setDate(date.value.getDate()-1))
+
+}
+
+
 
 </script>
 
@@ -35,6 +42,7 @@ function updateDate(newDate:any) {
             :show-type-day-month="props.showTypeDayMonth"
             :show-type-mode="props.showTypeMode"  
             @update-date="updateDate"
+            @show-yesterday="showYesterday"
         />
     </div>
     

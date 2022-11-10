@@ -28,11 +28,15 @@ const calendarToShowingDate = computed(() => {
 
 
 const emit = defineEmits< {
-    (e: 'updateDate', value: String):any }>()
+    (e: 'updateDate', value: String):any
+    (e: 'showYesterday'):void
+
+}>()
 
 function updateDate(date:any) {
     date.value = date
     emit('updateDate', date.value )
+    
 }
 
 function updateShowingDateBack() {
@@ -44,7 +48,7 @@ function updateShowingDateNext() {
     calendarFromShowingDate.value =  props.showTypeDayMonth ? new Date(calendarFromShowingDate.value.setFullYear(calendarFromShowingDate.value.getFullYear() + 1))  :  new Date(calendarFromShowingDate.value.setMonth(calendarFromShowingDate.value.getMonth() + 1)) 
 }
 
-const func = () => console.log('fn')
+
 
 </script>
 
@@ -56,9 +60,9 @@ const func = () => console.log('fn')
 
         <div class="container">
             <div class="options" v-if="props.showTypeMode">
-                <ul @click="func">
+                <ul >
                     <li><input type="button" value="Today"></li>
-                    <li><input type="button" value="Yesterday"></li>
+                    <li><input type="button" value="Yesterday" @click="emit('showYesterday')"></li>
                     <li><input type="button" value="Last 7 days"></li>
                     <li><input type="button" value="Last 14 days"></li>
                     <li><input type="button" value="Last 30 days"></li>
