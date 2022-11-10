@@ -9,8 +9,12 @@ import { ref } from 'vue';
 
 const props = defineProps ({
         showTime: Boolean,
-        showTypeDayMonth: Boolean
+        showTypeDayMonth: Boolean,
+        showTypeMode: Boolean
+
     })
+
+    console.log(props.showTypeMode)
 
 const date = ref(new Date())
 
@@ -26,7 +30,12 @@ function updateDate(newDate:any) {
 <template>
     <div class="container">
         <InputVue :show-time="props.showTime" :date="date"/>
-        <CalendarsWrapper :date="date" :show-type-day-month="props.showTypeDayMonth"  @update-date="updateDate"/>
+        <CalendarsWrapper 
+            :date="date" 
+            :show-type-day-month="props.showTypeDayMonth"
+            :show-type-mode="props.showTypeMode"  
+            @update-date="updateDate"
+        />
     </div>
     
 </template>

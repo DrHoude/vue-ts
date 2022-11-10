@@ -1,39 +1,35 @@
 <script setup lang="ts">
 
 
-import RadioComp from './components/RadioComp.vue';
+import RadioCompVue from './components/RadioComp.vue';
 import GeneralConfigVue from './components/GeneralConfig.vue';
 import DatePickerVue from './components/DatePicker.vue';
-import { ref} from 'vue'
-import { computed } from '@vue/reactivity';
-
-
+import { ref, computed } from 'vue'
 
 const showTimeType = ref(true);
 
 const showTypeDayMonth = ref(false);
 
+const showTypeTheme = ref(true);
+
+const showTypeMode = ref(false);
 
 
-const updateTheme = (event: any) => {
 
-   if (event.target.id == 2 ) {
-    document.documentElement.setAttribute('theme', 'dark-theme');
-   }
-   if (event.target.id == 1) {
-    document.documentElement.removeAttribute('theme');
-   } 
-}
+const optionsTheme = ref(['light', 'dark'])
 
-function getInputType(seen:any) {
-  showTimeType.value = seen
-}
+const selectedTheme = computed(() => showTypeTheme.value ? 'light': 'dark')
 
-function getTypeDayMonth(type: any) {
-  showTypeDayMonth.value = type
-}
+const updateShowTypeTheme = (()=> {
+  showTypeTheme.value = !showTypeTheme.value
+  document.body.classList.toggle('dark');
+
+ 
 
 
+  
+})
+console.log(showTypeTheme.value)
 
 </script>
 
@@ -42,12 +38,21 @@ function getTypeDayMonth(type: any) {
   <div class="app">
 
     <div>
-      <RadioComp name="radio1" theme ="Theme" option1="val1" option2="val2" @radio-click="updateTheme"/>
-      <GeneralConfigVue  @update-input-type="getInputType" @update-type-value="getTypeDayMonth"/>
+      <RadioCompVue name="radio4" :options="optionsTheme" :value="selectedTheme" @radio-click="updateShowTypeTheme"/>
+
+      <GeneralConfigVue  
+        :show-type-day-month="showTypeDayMonth" 
+        :show-time="showTimeType"
+        :show-type-mode="showTypeMode"
+        @update-type-value="showTypeDayMonth = !showTypeDayMonth" 
+        @update-show-time="showTimeType = !showTimeType"
+        @update-type-mode="showTypeMode = !showTypeMode"
+      />
+
     </div>
 
     <div>
-      <DatePickerVue :show-time="showTimeType" :show-type-day-month="showTypeDayMonth"/>
+      <DatePickerVue :show-time="showTimeType" :show-type-day-month="showTypeDayMonth" :show-type-mode="showTypeMode"/>
     </div>
 
   
@@ -56,10 +61,12 @@ function getTypeDayMonth(type: any) {
 </template>
 
 <style>
-@import './style.css';
-  body{
-    background-color: var(--generalBackground);
-  }
+
+
+
+.dark {
+  background-color: rgb(185, 150, 150);
+}
 
   .app {
     display: flex;

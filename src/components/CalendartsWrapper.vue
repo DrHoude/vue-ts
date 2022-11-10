@@ -1,23 +1,28 @@
 <script setup lang="ts">
 
 import Calendar from './Calendar.vue'
-import { ref,computed } from 'vue'
+import { ref,computed, onMounted, onBeforeMount, watch } from 'vue'
 
 
 const props = defineProps ({
     date: Date,
-    showTypeDayMonth: Boolean
-   
+    showTypeDayMonth: Boolean,
+    showTypeMode: Boolean
 })
 
+console.log(props.showTypeMode)
 
-const calendarFromShowingDate =  computed(()=> {
-    return new Date(props.date!)
-})
+const disabled = ref(false)
 
-const calendarToShowingDate = computed(()=>{
+const calendarFromShowingDate = ref(props.date!)
+
+const calendarToShowingDate = computed(() => {
     let nextObj = new Date(calendarFromShowingDate.value)
-    nextObj.setMonth(calendarFromShowingDate.value.getMonth()+1)
+    if (props.showTypeDayMonth) {
+        nextObj.setFullYear(calendarFromShowingDate.value.getFullYear()+1)
+    } else {
+        nextObj.setMonth(calendarFromShowingDate.value.getMonth()+1)
+    }
     return nextObj
 })
 
@@ -31,37 +36,62 @@ function updateDate(date:any) {
 }
 
 function updateShowingDateBack() {
-    calendarFromShowingDate.value.setMonth(calendarFromShowingDate.value.getMonth() + 1)
-    console.log(calendarFromShowingDate.value)
-    
+    calendarFromShowingDate.value =  props.showTypeDayMonth ? new Date(calendarFromShowingDate.value.setFullYear(calendarFromShowingDate.value.getFullYear() - 1)) : new Date(calendarFromShowingDate.value.setMonth(calendarFromShowingDate.value.getMonth() - 1)) 
 }
 
 
-function updateShowingDateNext() {}
+function updateShowingDateNext() {
+    calendarFromShowingDate.value =  props.showTypeDayMonth ? new Date(calendarFromShowingDate.value.setFullYear(calendarFromShowingDate.value.getFullYear() + 1))  :  new Date(calendarFromShowingDate.value.setMonth(calendarFromShowingDate.value.getMonth() + 1)) 
+}
 
-
-
-
+const func = () => console.log('fn')
 
 </script>
 
 
 <template>
-    <div class="container">
 
-        <Calendar :showingDate="calendarFromShowingDate" 
-        :showMonths="props.showTypeDayMonth" @update-date ="updateDate" 
-        :leftArrow="true" @moveBack="updateShowingDateBack"/>
+    <div>
+        
 
-        <Calendar :showingDate="calendarToShowingDate" 
-        :showMonths="props.showTypeDayMonth" @update-date="updateDate" 
-        :rightArrow="true" @moveNext="updateShowingDateNext"/> 
+        <div class="container">
+            <div class="options" v-if="props.showTypeMode">
+                <ul @click="func">
+                    <li><input type="button" value="Today"></li>
+                    <li><input type="button" value="Yesterday"></li>
+                    <li><input type="button" value="Last 7 days"></li>
+                    <li><input type="button" value="Last 14 days"></li>
+                    <li><input type="button" value="Last 30 days"></li>
+                    <li><input type="button" value="Whole period"></li>
+                    <li><input type="button" value="Custom"></li>
+                </ul>
+                
+            </div>
 
-        <!--<Calendar :date = "date" :showingDate="calendarFromShowingDate" @update:date="updateDate"
-             @moveBackward="updateShowingDateBackword"/>
+            <div :class="['calendar-container']" >
+                <Calendar :showingDate="calendarFromShowingDate" 
+                :showMonths="props.showTypeDayMonth" 
+                :leftArrow="true"
+             
+                @update-date ="updateDate" 
+                @moveBack="updateShowingDateBack"
+              
+            />
 
-        <Calendar :date = "date" :showingDate="calendarToShowingDate" @update:date="updateDate" 
-            @moveForward="updateShowingDateForward"/>-->
+            <Calendar :showingDate="calendarToShowingDate" 
+                :showMonths="props.showTypeDayMonth" 
+                :rightArrow="true" 
+                @update-date="updateDate" 
+                @moveNext="updateShowingDateNext"
+            /> 
+            </div>
+
+            
+            
+            
+           
+        </div> 
+
     </div>
     
 </template>
@@ -71,10 +101,35 @@ function updateShowingDateNext() {}
     .container {
         background-color: white;
         height: 300px;
-        width: 600px;
+        width: 800px;
         margin-top: 20px;
+        padding: 0 15px;
         display: flex;
         justify-content: space-around;
+    }
+
+    .calendar-container {
+        width: 450px;
+        display: flex;
+        justify-content: space-between;
+      
+        
+        
+    }
+
+    .options {
+ 
+    }
+
+    ul {
+        list-style: none;
+    }
+
+    input {
+        cursor: pointer;
+        border: none;
+        background-color: white;
+        
     }
 
 </style>

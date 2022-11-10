@@ -8,37 +8,50 @@
         showingDate: Date,
         showMonths: Boolean,
         leftArrow: Boolean,
-        rightArrow: Boolean
-       
-       
-    })
-
-    console.log(props.showMonths)
-
-    const selectedDateObj = ref(new Date())
-
-    const showDateObj = computed(()=> {
-        return formatDateTitle(props.showingDate!)
-    })
-
-    const dateObjs = computed(() => {
-        return getAllDaysInMonth(props.showingDate!)
+        rightArrow: Boolean,
+      
     })
 
     const week = ref(['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'])
 
     const months = getMonths()
 
+    
 
+    const selectedDateObj = ref(new Date())
+    console.log(selectedDateObj)
+    console.log(months[selectedDateObj.value.getMonth()])
+
+    const showDateObj = computed(()=> {
+        return formatDateTitle(props.showingDate!)
+    })
+
+
+    const dateObjs = computed(() => {
+        return getAllDaysInMonth(props.showingDate!)
+    })
+    console.log(dateObjs.value[0])
+
+  
     function getDateClasses(dateObj: Date) {
         return {
+            'current-date': selectedDateObj.value.getMonth() == dateObj.getMonth() && selectedDateObj.value.getDate() == dateObj.getDate(),
             'selected-date': selectedDateObj.value.toString()===dateObj.toString(), 
             'not-current-month-day': props.showingDate?.getMonth() !== dateObj.getMonth()
         }
     }
 
-    const emit = defineEmits<
-    (e: 'update-date', value: Date) => {}>()
+    console.log(selectedDateObj.value )
+    console.log(selectedDateObj.value.getMonth())
+
+
+   
+
+    const emit = defineEmits<{
+        (e: 'update-date', value: Date): Object
+        (e: 'moveBack'):void
+        (e: 'moveNext'):void
+    }>()
 
     const daySelected = (day: Date) => {
         console.log(day)
@@ -46,22 +59,30 @@
         emit('update-date', selectedDateObj.value )
     }
 
+    const isCurrentDate = (month: string) => {
+        console.log(selectedDateObj.value.getFullYear(), props.showingDate?.getFullYear(), 'FF')
+        return months[selectedDateObj.value.getMonth()] === month && selectedDateObj.value.getFullYear() === props.showingDate?.getFullYear()
+    }
+
 </script>
 
 <template>
 
-    <div>
+    <div class="calendar-wrapper">
+       
 
         <div class="calendar">
 
             <header>
-                <button v-if="props.leftArrow" class="btnPrevious"></button>
-                <div>{{showDateObj}}</div>    
-                <button v-if="props.rightArrow"  class="btnNext"></button>
+                <button v-if="props.leftArrow" class="btnPrevious" @click="$emit('moveBack')"></button>
+                 
+                <button v-if="props.rightArrow"  class="btnNext" @click="$emit('moveNext')"></button>
 
             </header>
 
             <div v-if ="!props.showMonths">
+
+                <div class="dateTitle">{{showDateObj}}</div> 
 
                 <div class="calendar-week">
                     <div v-for="item in week" class="week-day">{{ item }}</div>
@@ -69,6 +90,7 @@
 
                 <div class="calendar-days">
                     <div 
+                       
                         v-for="dateObj in dateObjs" @click="daySelected(dateObj)"
                         :class="getDateClasses(dateObj)">
                         {{ dateObj.getDate() }}
@@ -78,19 +100,12 @@
             </div>
 
             <div v-else>
+                <div>{{props.showingDate?.getFullYear()}}</div> 
                 <div class="calendar-months">
-                <div v-for="month in months" class="calendar-month">{{month}}</div>
+                    <div v-for="month in months" 
+                    :class="['calendar-month' , {'current-date':  isCurrentDate(month) }]"  >{{month}}</div>
+                </div>
             </div>
-            </div>
-
-           
-
-        <!--
-
-         
-                
-            
-        -->
 
         </div>
     </div>
@@ -100,16 +115,33 @@
 </template>
 
 <style scoped>
+
+
+
+.calendar {
+    width: 200px;
+    position: relative;
+}
+
+.dateTitle {
+    position: absolute;
+    top: 5px;
+    left: 40px;
+}
+
+.current-date {
+    color: blue;
+}
+
 header {
-   
    position: relative;
    height: 20px;
-   display: flex;
    align-items: center;
    justify-content: center;
-   margin-bottom: 15px;
+   margin: 15px 0;
 
 }
+
 .btnNext {
     background-image: url(../assets/3.png);
     background-size: cover;
@@ -118,7 +150,7 @@ header {
     border: none;
     background-color: white;
     position: absolute;
-    right: 0;
+    right: -25px;
        
 }
 
@@ -130,20 +162,18 @@ header {
     border: none;
     background-color: white;
     position: absolute;
-    left: 0;
+    left: -25px;
    
 } 
 
-    .calendar {
-        width: 200px;
-    }
 
-    .calendar-days {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        row-gap: 10px;
-        background-color: white;   
-    }
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    row-gap: 10px;
+    background-color: white;   
+}
 
     .calendar-week {
         display: flex;
@@ -167,6 +197,7 @@ header {
     .calendar-months {
     display: flex ;
     flex-wrap: wrap;
+    
     width: 250px;
     margin-top: 15px;
 }
@@ -176,7 +207,7 @@ header {
     cursor: pointer;
     width: 25px;
     font-size: 14px;
-    margin-left: 15px;
+    margin: 0 5px;
     margin-bottom: 15px;
     padding: 5px 20px;
 }
