@@ -1,0 +1,1 @@
+export type DateInterval = { from: Date, to: Date }

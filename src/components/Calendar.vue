@@ -1,26 +1,42 @@
 <script setup lang="ts">
 
-    import { defineProps,computed,ref } from 'vue';
+    import { defineProps,computed,ref, PropType,Ref } from 'vue';
+import { DateInterval } from '../types';
     import { formatDateTitle, getAllDaysInMonth, getMonths } from '../utils';
 
 
     const props = defineProps ({
+        date: Date,
         showingDate: Date,
         showMonths: Boolean,
         leftArrow: Boolean,
         rightArrow: Boolean,
-      
+        arrLastWeek: Array,
+        dateInterval: {
+            type: Object as PropType<DateInterval>,
+            required: true
+        }
+   
+    
     })
 
+    console.log(props.dateInterval.from)
+    console.log(props.dateInterval.to)
+
+   
+
+
+   
+  
+ 
+
+
+    
+      
     const week = ref(['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'])
 
     const months = getMonths()
 
-    
-
-    const selectedDateObj = ref(new Date())
-    console.log(selectedDateObj)
-    console.log(months[selectedDateObj.value.getMonth()])
 
     const showDateObj = computed(()=> {
         return formatDateTitle(props.showingDate!)
@@ -35,33 +51,33 @@
   
     function getDateClasses(dateObj: Date) {
         return {
-            'current-date': selectedDateObj.value.getMonth() == dateObj.getMonth() && selectedDateObj.value.getDate() == dateObj.getDate(),
-            'selected-date': selectedDateObj.value.toString()===dateObj.toString(), 
+            'weekIntervalPoints': props.dateInterval.from.getMonth() === dateObj.getMonth() &&  props.dateInterval.from.getDate() === dateObj.getDate(),
+            
+             
+            'current-date': props.date!.getMonth() == dateObj.getMonth() && props.date!.getDate() == dateObj.getDate(),
+            'selected-date': props.date!.toString()===dateObj.toString(), 
             'not-current-month-day': props.showingDate?.getMonth() !== dateObj.getMonth()
         }
     }
-
-    console.log(selectedDateObj.value )
-    console.log(selectedDateObj.value.getMonth())
-
-
-   
 
     const emit = defineEmits<{
         (e: 'update-date', value: Date): Object
         (e: 'moveBack'):void
         (e: 'moveNext'):void
+        (e: 'updateDateInterval', value: DateInterval ): void 
     }>()
 
-    const daySelected = (day: Date) => {
-        console.log(day)
-        selectedDateObj.value = new Date(day)
-        emit('update-date', selectedDateObj.value )
+    const daySelected = (date: Date) => {
+        emit('update-date', date )
     }
 
     const isCurrentDate = (month: string) => {
-        console.log(selectedDateObj.value.getFullYear(), props.showingDate?.getFullYear(), 'FF')
-        return months[selectedDateObj.value.getMonth()] === month && selectedDateObj.value.getFullYear() === props.showingDate?.getFullYear()
+        console.log(props.date!.getFullYear(), props.showingDate?.getFullYear(), 'FF')
+        return months[props.date!.getMonth()] === month && props.date!.getFullYear() === props.showingDate?.getFullYear()
+    }
+
+    function updateDateInterval() {
+        emit('updateDateInterval', props.dateInterval)
     }
 
 </script>
@@ -89,8 +105,9 @@
                 </div>
 
                 <div class="calendar-days">
-                    <div 
-                       
+                 
+
+                    <div class="calendar-day"
                         v-for="dateObj in dateObjs" @click="daySelected(dateObj)"
                         :class="getDateClasses(dateObj)">
                         {{ dateObj.getDate() }}
@@ -130,7 +147,17 @@
 }
 
 .current-date {
-    color: blue;
+    background-color: rgb(133, 133, 209);
+    border-radius: 100%;
+}
+
+.weekInterval {
+    color: red;
+}
+
+.weekIntervalPoints {
+    background-color: rgb(133, 133, 209);
+    border-radius: 100%;
 }
 
 header {
@@ -173,6 +200,11 @@ header {
     grid-template-columns: repeat(7, 1fr);
     row-gap: 10px;
     background-color: white;   
+}
+
+.calendar-day {
+    display: flex;
+    flex: 1 1 auto;
 }
 
     .calendar-week {

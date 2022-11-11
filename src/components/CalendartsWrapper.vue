@@ -1,52 +1,77 @@
 <script setup lang="ts">
 
 import Calendar from './Calendar.vue'
-import { ref,computed, onMounted, onBeforeMount, watch } from 'vue'
+import { ref,computed, Ref, PropType } from 'vue'
+
+import { DateInterval } from '../types'
 
 
 const props = defineProps ({
     date: Date,
+    calendarFromShowingDate: Date,
+    calendarToShowingDate: Date,
     showTypeDayMonth: Boolean,
-    showTypeMode: Boolean
+    dateInterval: {
+            type: Object as PropType<DateInterval>,
+            required: true
+        }
 })
 
-console.log(props.showTypeMode)
-
-const disabled = ref(false)
-
-const calendarFromShowingDate = ref(props.date!)
-
-const calendarToShowingDate = computed(() => {
-    let nextObj = new Date(calendarFromShowingDate.value)
-    if (props.showTypeDayMonth) {
-        nextObj.setFullYear(calendarFromShowingDate.value.getFullYear()+1)
-    } else {
-        nextObj.setMonth(calendarFromShowingDate.value.getMonth()+1)
-    }
-    return nextObj
-})
 
 
 const emit = defineEmits< {
-    (e: 'updateDate', value: String):any
-    (e: 'showYesterday'):void
+    (e: 'update-date', value: Date):void
+    (e: 'updateDateInterval', value: DateInterval): void 
 
 }>()
 
-function updateDate(date:any) {
-    date.value = date
-    emit('updateDate', date.value )
+function updateDate(date: Date) {
+    emit('update-date', date )
     
 }
 
-function updateShowingDateBack() {
-    calendarFromShowingDate.value =  props.showTypeDayMonth ? new Date(calendarFromShowingDate.value.setFullYear(calendarFromShowingDate.value.getFullYear() - 1)) : new Date(calendarFromShowingDate.value.setMonth(calendarFromShowingDate.value.getMonth() - 1)) 
-}
+// function updateDateByOption(option: string) {
+//     let newDate: Date | undefined = props.date
+
+//     switch (option) {
+//         case 'showToday':
+//         newDate = new Date()
+//             break;
+//         case 'showYesterday':
+//         newDate = new Date()
+//         newDate.setDate(newDate.getDate()-1)
+//             break;
+//     }
+
+//     updateDate(newDate!)
+
+// }
 
 
-function updateShowingDateNext() {
-    calendarFromShowingDate.value =  props.showTypeDayMonth ? new Date(calendarFromShowingDate.value.setFullYear(calendarFromShowingDate.value.getFullYear() + 1))  :  new Date(calendarFromShowingDate.value.setMonth(calendarFromShowingDate.value.getMonth() + 1)) 
-}
+// function showLastWeek() {
+  
+//   let first = new Date(calendarFromShowingDate.value)
+//   let last = new Date(calendarFromShowingDate.value.setDate(calendarFromShowingDate.value.getDate()-7))
+
+
+
+//   while(first.getDate() != last.getDate()) {
+//       first.setDate(first.getDate()-1)
+//       arrLastWeek.value.push(new Date(first))
+//   }
+
+//   console.log(first)
+//   console.log(last)
+//   console.log(arrLastWeek.value)
+
+
+
+//   return arrLastWeek
+
+ 
+
+ 
+// }
 
 
 
@@ -59,34 +84,45 @@ function updateShowingDateNext() {
         
 
         <div class="container">
-            <div class="options" v-if="props.showTypeMode">
+            <!-- <div class="options" v-if="props.showTypeMode">
                 <ul >
-                    <li><input type="button" value="Today"></li>
-                    <li><input type="button" value="Yesterday" @click="emit('showYesterday')"></li>
-                    <li><input type="button" value="Last 7 days"></li>
+                    <li><input type="button" value="Today" @click="updateDateByOption('showToday')"></li>
+                    <li><input type="button" value="Yesterday" @click="updateDateByOption('showYesterday')"></li>
+                    <li><input type="button" value="Last 7 days" @click="showLastWeek"></li>
                     <li><input type="button" value="Last 14 days"></li>
                     <li><input type="button" value="Last 30 days"></li>
                     <li><input type="button" value="Whole period"></li>
                     <li><input type="button" value="Custom"></li>
                 </ul>
                 
-            </div>
+            </div> -->
+            <div>{{props.date}}</div>
 
             <div :class="['calendar-container']" >
-                <Calendar :showingDate="calendarFromShowingDate" 
+                <Calendar 
+                :date="date"
+                :showingDate="calendarFromShowingDate" 
                 :showMonths="props.showTypeDayMonth" 
                 :leftArrow="true"
+                :dateInterval="props.dateInterval"
+             
+              
              
                 @update-date ="updateDate" 
-                @moveBack="updateShowingDateBack"
+                @moveBack="$emit('moveBack')"
+                @updateDateInterval="(value) => $emit('updateDateInterval', value)"
               
             />
 
-            <Calendar :showingDate="calendarToShowingDate" 
+            <Calendar 
+                :date="date"
+                :showingDate="calendarToShowingDate" 
                 :showMonths="props.showTypeDayMonth" 
                 :rightArrow="true" 
+                :dateInterval="props.dateInterval"
                 @update-date="updateDate" 
-                @moveNext="updateShowingDateNext"
+                @moveNext="$emit('moveNext')"
+                @updateDateInterval="(value) => $emit('updateDateInterval', value)"
             /> 
             </div>
 
@@ -102,15 +138,15 @@ function updateShowingDateNext() {
 
 <style scoped>
 
-    .container {
-        background-color: white;
+    /* .container {
+       
         height: 300px;
         width: 800px;
         margin-top: 20px;
         padding: 0 15px;
         display: flex;
         justify-content: space-around;
-    }
+    } */
 
     .calendar-container {
         width: 450px;
@@ -121,19 +157,7 @@ function updateShowingDateNext() {
         
     }
 
-    .options {
- 
-    }
 
-    ul {
-        list-style: none;
-    }
-
-    input {
-        cursor: pointer;
-        border: none;
-        background-color: white;
-        
-    }
+   
 
 </style>

@@ -12,7 +12,7 @@ const showTypeDayMonth = ref(false);
 
 const showTypeTheme = ref(true);
 
-const showTypeMode = ref(false);
+const showTypeMode = ref(true);
 
 
 
