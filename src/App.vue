@@ -1,28 +1,35 @@
 <script setup lang="ts">
 
 
-import RadioComp from './components/RadioComp.vue';
+import RadioCompVue from './components/RadioComp.vue';
 import GeneralConfigVue from './components/GeneralConfig.vue';
+import DatePickerVue from './components/DatePicker.vue';
+import { ref, computed } from 'vue'
 
-import { ref,watch } from 'vue'
-import Test from './components/test comp/test.vue';
+const showTimeType = ref(true);
 
-const message = ref('mess');
+const showTypeDayMonth = ref(false);
 
-const value = ref('');
+const showTypeTheme = ref(true);
 
-const updateTheme = (event: any) => {
+const showTypeMode = ref(true);
+
+
+
+const optionsTheme = ref(['light', 'dark'])
+
+const selectedTheme = computed(() => showTypeTheme.value ? 'light': 'dark')
+
+const updateShowTypeTheme = (()=> {
+  showTypeTheme.value = !showTypeTheme.value
+  document.body.classList.toggle('dark');
+
+ 
+
 
   
-   if (event.target.id == 2 ) {
-    document.documentElement.setAttribute('theme', 'dark-theme');
-   }
-   if (event.target.id == 1) {
-    document.documentElement.removeAttribute('theme');
-   } 
-
-  
-}
+})
+console.log(showTypeTheme.value)
 
 </script>
 
@@ -30,28 +37,38 @@ const updateTheme = (event: any) => {
  
   <div class="app">
 
-    <RadioComp name="radio1" theme ="Theme" option1="val1" option2="val2" @radio-click="updateTheme"/>
+    <div>
+      <RadioCompVue name="radio4" :options="optionsTheme" :value="selectedTheme" @radio-click="updateShowTypeTheme"/>
 
-    <GeneralConfigVue/>
+      <GeneralConfigVue  
+        :show-type-day-month="showTypeDayMonth" 
+        :show-time="showTimeType"
+        :show-type-mode="showTypeMode"
+        @update-type-value="showTypeDayMonth = !showTypeDayMonth" 
+        @update-show-time="showTimeType = !showTimeType"
+        @update-type-mode="showTypeMode = !showTypeMode"
+      />
 
-    
+    </div>
 
-    
+    <div>
+      <DatePickerVue :show-time="showTimeType" :show-type-day-month="showTypeDayMonth" :show-type-mode="showTypeMode"/>
+    </div>
 
   
-
-
-    
   </div>
 
 </template>
 
 <style>
-@import './style.css';
-  body{
-    background-color: var(--generalBackground);
-    
-    
 
+
+
+.dark {
+  background-color: rgb(185, 150, 150);
+}
+
+  .app {
+    display: flex;
   }
 </style>

@@ -1,8 +1,6 @@
-:root{
-  --generalBackground: aliceblue
+body {
+  background-color: aliceblue;
 }
 
-[theme="dark-theme"]{
-  --generalBackground: darkgray
-}
+
 
