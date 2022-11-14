@@ -16,19 +16,9 @@ import { DateInterval } from '../types';
             type: Object as PropType<DateInterval>,
             required: true
         }
-   
-    
+ 
     })
    
-
-
-   
-  
- 
-
-
-    
-      
     const week = ref(['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'])
 
     const months = getMonths()
@@ -71,11 +61,7 @@ import { DateInterval } from '../types';
     }
 
     function isInRange(dateInterval: DateInterval, date: Date):boolean {
-        
-
         return isAfterDay(dateInterval.from, date) && isBeforeDay(dateInterval.to, date)
-        
-
     }
     
 
@@ -83,8 +69,6 @@ import { DateInterval } from '../types';
     function getDateClasses(dateObj: Date) {
         const now = new Date()
       
-
-
         if (isRangeBoundary(props.dateInterval, dateObj)) {
             return 'selected-date'
         }
@@ -95,11 +79,18 @@ import { DateInterval } from '../types';
              
             // 'current-date': props.date!.getMonth() == dateObj.getMonth() && props.date!.getDate() == dateObj.getDate(),
             // 'selected-date': props.date!.toString()===dateObj.toString(), 
-            // 'not-current-month-day': props.showingDate?.getMonth() !== dateObj.getMonth(),
+            'not-current-month-day': props.showingDate?.getMonth() !== dateObj.getMonth(),
             'current-date': isSameDay(dateObj, now),
             'range-date': isInRange(props.dateInterval,dateObj)
-
         }
+    }
+
+    function getMonthClasses(month:any) {
+
+        return {
+            'current-date':  isCurrentDate(month)
+        }
+
     }
 
     const emit = defineEmits<{
@@ -158,10 +149,10 @@ import { DateInterval } from '../types';
             </div>
 
             <div v-else>
-                <div>{{props.showingDate?.getFullYear()}}</div> 
+                <div class="month-title">{{props.showingDate?.getFullYear()}}</div> 
                 <div class="calendar-months">
                     <div v-for="month in months" 
-                    :class="['calendar-month' , {'current-date':  isCurrentDate(month) }]"  >{{month}}</div>
+                    :class="['calendar-month' , getMonthClasses(month)]"  >{{month}}</div>
                 </div>
             </div>
 
@@ -188,7 +179,7 @@ import { DateInterval } from '../types';
 }
 
 .current-date {
-   color: red;
+   background-color: blue;
 }
 .range-date {
     background-color: aqua;
@@ -285,6 +276,12 @@ header {
     margin: 0 5px;
     margin-bottom: 15px;
     padding: 5px 20px;
+}
+
+.month-title {
+    position: absolute;
+    top: 5px;
+    left: 50%;
 }
 
 

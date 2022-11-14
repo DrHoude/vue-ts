@@ -17,8 +17,7 @@ const props = defineProps ({
     min-height: 20px;
     padding: 5px;
     margin-top: 10px;
-
-    max-width: 200px;
+    max-width: 300px;
     background-color: white;
     
     

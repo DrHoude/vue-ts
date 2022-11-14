@@ -3,7 +3,8 @@
 import { ref } from 'vue';
 import { DateInterval } from '../types';
     const props = defineProps({
-        date: Date
+        date: Date,
+        showMonths: Boolean,
     })
 
     const emit = defineEmits< {
@@ -23,6 +24,8 @@ import { DateInterval } from '../types';
 
     }
 
+
+
     function updateDateByOption(option?: string) {
          let newDate: Date | undefined = props.date
          let from;
@@ -30,14 +33,14 @@ import { DateInterval } from '../types';
         switch (option) {
             case 'showToday':
             newDate = new Date()
-             updateDate(newDate!)
+             updateInterval({from:newDate, to: newDate})
 
                 break;
             case 'showYesterday':
             newDate = new Date()
             newDate.setDate(newDate.getDate()-1)
                updateDate(newDate!)
-
+               updateInterval({from:newDate, to: newDate})
                 break;
             case 'showWeek':
                 from = new Date()
@@ -62,12 +65,46 @@ import { DateInterval } from '../types';
                 updateInterval({from:from, to: new Date()})
                 break;
 
+
+
+       
+            case 'showThisMonth':
+            newDate = new Date()
+            updateDate(newDate!)
+            break;
+
+
+            case 'showLastMonth':
+                newDate = new Date()
+                newDate.setMonth(newDate.getMonth()-1)
+                updateDate(newDate!)
+                break;
+
+            
+            case 'showThreeMonths':
+                from = new Date()
+                from.setMonth(from.getMonth()-3)
+                updateInterval({from:from, to: new Date()})
+                break;
+
+            case 'showSixMonths':
+                from = new Date()
+                from.setMonth(from.getMonth()-6)
+                updateInterval({from:from, to: new Date()})
+                break;
+
+            case 'showYear':
+                from = new Date()
+                from.setMonth(from.getMonth()-12)
+                updateInterval({from:from, to: new Date()})
+                break;
+
             default: 
-                updateDate(new Date())
+            updateInterval({from:new Date(), to: new Date()})
         }
-
-
     }
+
+  
 
     const selectedOption = ref<string | undefined>()
 
@@ -82,34 +119,44 @@ import { DateInterval } from '../types';
         return {"active-option": option === selectedOption.value}
     }
 
-    const values = [
-    {value:'Today', key: 'showToday'},
-    {value:'Yesterday', key: 'showYesterday'},
-    {value:'Last 7 days', key: 'showWeek'},
-    {value:'last 14 days', key: 'show14Days'},
-    {value:'Last 30 days', key: 'showMonth'},
-    {value:'Whole period', key: 'showWholePeriod'},
-    {value:'Custom', key: undefined}]
+    const daysOptions = [
+        {value:'Today', key: 'showToday'},
+        {value:'Yesterday', key: 'showYesterday'},
+        {value:'Last 7 days', key: 'showWeek'},
+        {value:'last 14 days', key: 'show14Days'},
+        {value:'Last 30 days', key: 'showMonth'},
+        {value:'Whole period', key: 'showWholePeriod'},
+        {value:'Custom', key: undefined}
+    ]
+
+
+
+    const monthsOptions = [
+        {value:'This Month', key:'showThisMonth'},
+        {value:'Last Month', key:'showLastMonth'},
+        {value:'Last 3 Months', key:'showThreeMonths'},
+        {value:'Last 6 Months',key:'showSixMonths'},
+        {value:'Last 12 Months', key:'showYear'},
+        {value:'Custom', key:undefined}
+    ]
 
 </script>
 
 
 <template>
     <div class="options" >
-                <ul >
-                    <!-- <li :class="getOptionClass('showToday')"><input type="button" value="Today" @click="handleOptionClick('showToday')"></li>
-                    <li :class="getOptionClass('showYesterday')"><input type="button" value="Yesterday" @click="handleOptionClick('showYesterday')"></li>
-                    <li :class="getOptionClass('showWeek')"><input type="button" value="Last 7 days" @click="handleOptionClick('showWeek')" ></li>
-                    <li :class="getOptionClass('show14Days')"><input type="button" value="Last 14 days" @click="handleOptionClick('show14Days')"></li>
-                    <li :class="getOptionClass('showMonth')"><input type="button" value="Last 30 days" @click="handleOptionClick('showMonth')"></li>
-                    <li :class="getOptionClass('showWholePeriod')"><input type="button" value="Whole period" @click="handleOptionClick('showWholePeriod')"></li>
-                    <li :class="getOptionClass()"><input type="button" value="Custom" @click="handleOptionClick()"></li> -->
-                    <li v-for="(value, index) in values" :key="index"
-                    :class="getOptionClass(value.key)">
-                        <input type="button" :value="value.value" @click="handleOptionClick(value.key)"></li>
-                </ul>
+        <ul v-if="!props.showMonths" >
+            <li v-for="(dayOption, index) in daysOptions" :key="index"
+                :class="getOptionClass(dayOption.key)">
+                <input type="button" :value="dayOption.value" @click="handleOptionClick(dayOption.key)"></li>
+        </ul>
+        <ul v-else>
+            <li v-for="(monthOption, index) in monthsOptions" :key="index"
+                :class="getOptionClass(monthOption.key)">
+                <input type="button" :value="monthOption.value" @click="handleOptionClick(monthOption.key)"></li>
+        </ul>
                 
-            </div>
+    </div>
 
 
 </template>
@@ -130,11 +177,16 @@ import { DateInterval } from '../types';
 
     li {
         background-color: white;
+        margin-top: 10px;
     }
 
     .active-option {
         background-color: blueviolet;
         color: white;
+    }
+
+    .options {
+            margin-top: 20px;
     }
 
 </style>

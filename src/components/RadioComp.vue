@@ -34,7 +34,8 @@ const props = defineProps({
     
     <div class="radio-wrapper">
         <div v-for="option in props.options">
-            <input :name="name" type="radio" :checked="props.value === option"  @change="$emit('radio-click', $event)" />
+            <input 
+            :name="name" type="radio" :checked="props.value === option"  @change="$emit('radio-click', $event)" />
             <label>{{option}}</label>
         </div>
     </div>
