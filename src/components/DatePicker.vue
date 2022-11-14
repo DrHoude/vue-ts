@@ -30,7 +30,11 @@ watch(dateInterval, (value)=>{
     console.log(value)
 }, { deep: true })
 
-const calendarFromShowingDate = ref(date.value)
+
+
+const calendarFromShowingDate = ref(new Date(date.value))
+
+
 
 const calendarToShowingDate = computed(() => {
     let nextObj = new Date(calendarFromShowingDate.value)

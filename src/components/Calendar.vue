@@ -19,10 +19,6 @@ import { DateInterval } from '../types';
    
     
     })
-
-    console.log(props.dateInterval.from)
-    console.log(props.dateInterval.to)
-
    
 
 
@@ -48,15 +44,61 @@ import { DateInterval } from '../types';
     })
     console.log(dateObjs.value[0])
 
-  
+    function isSameDay(date1: Date, date2: Date): boolean {
+        return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate()
+    }
+
+    function getDateFixedToDay(date: Date) {
+        return  date.getTime() / (1000 * 60 * 60 * 24)
+    }
+
+    function isBeforeDay(date1: Date, date2: Date): boolean {
+        return getDateFixedToDay(date1) > getDateFixedToDay(date2)
+    }
+
+    function isAfterDay(date1: Date, date2: Date): boolean {
+        return getDateFixedToDay(date1) < getDateFixedToDay(date2)
+    }
+
+
+
+    function isRangeBoundary(dateInterval: DateInterval, date: Date):boolean {
+        
+
+        return isSameDay(dateInterval.from, date) || isSameDay(dateInterval.to,date)
+        
+
+    }
+
+    function isInRange(dateInterval: DateInterval, date: Date):boolean {
+        
+
+        return isAfterDay(dateInterval.from, date) && isBeforeDay(dateInterval.to, date)
+        
+
+    }
+    
+
+
     function getDateClasses(dateObj: Date) {
+        const now = new Date()
+      
+
+
+        if (isRangeBoundary(props.dateInterval, dateObj)) {
+            return 'selected-date'
+        }
+
         return {
-            'weekIntervalPoints': props.dateInterval.from.getMonth() === dateObj.getMonth() &&  props.dateInterval.from.getDate() === dateObj.getDate(),
+            // 'weekIntervalPoints': props.dateInterval.from.getMonth() === dateObj.getMonth() &&  props.dateInterval.from.getDate() === dateObj.getDate(),
             
              
-            'current-date': props.date!.getMonth() == dateObj.getMonth() && props.date!.getDate() == dateObj.getDate(),
-            'selected-date': props.date!.toString()===dateObj.toString(), 
-            'not-current-month-day': props.showingDate?.getMonth() !== dateObj.getMonth()
+            // 'current-date': props.date!.getMonth() == dateObj.getMonth() && props.date!.getDate() == dateObj.getDate(),
+            // 'selected-date': props.date!.toString()===dateObj.toString(), 
+            // 'not-current-month-day': props.showingDate?.getMonth() !== dateObj.getMonth(),
+            'current-date': isSameDay(dateObj, now),
+            'range-date': isInRange(props.dateInterval,dateObj)
+
         }
     }
 
@@ -72,7 +114,6 @@ import { DateInterval } from '../types';
     }
 
     const isCurrentDate = (month: string) => {
-        console.log(props.date!.getFullYear(), props.showingDate?.getFullYear(), 'FF')
         return months[props.date!.getMonth()] === month && props.date!.getFullYear() === props.showingDate?.getFullYear()
     }
 
@@ -147,8 +188,10 @@ import { DateInterval } from '../types';
 }
 
 .current-date {
-    background-color: rgb(133, 133, 209);
-    border-radius: 100%;
+   color: red;
+}
+.range-date {
+    background-color: aqua;
 }
 
 .weekInterval {
