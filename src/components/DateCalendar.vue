@@ -1,17 +1,14 @@
 <script setup lang="ts">
 
-    import { defineProps,computed,ref, PropType,Ref } from 'vue';
+    import { defineProps,computed,ref, PropType} from 'vue';
     import { DateInterval } from '../types';
     import { formatDateTitle, getAllDaysInMonth, getMonths } from '../utils';
-
     import {isSameDay, isBeforeDay, isAfterDay } from '../utils'
-
-
 
     const props = defineProps ({
         date: Date,
         showingDate: Date,
-        showMonths: Boolean,
+    
         leftArrow: Boolean,
         rightArrow: Boolean,
         arrLastWeek: Array,
@@ -24,7 +21,7 @@
    
     const week = ref(['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'])
 
-    const months = getMonths()
+    // const months = getMonths()
 
 
     const showDateObj = computed(()=> {
@@ -62,40 +59,40 @@
 
  
 
-    function isSameMonth(date:Date, month:string):boolean {
-        return months[date.getMonth()] === month  && date.getFullYear() === props.showingDate?.getFullYear()
-    }
+    // function isSameMonth(date:Date, month:string):boolean {
+    //     return months[date.getMonth()] === month  && date.getFullYear() === props.showingDate?.getFullYear()
+    // }
 
-    function isRangeBoundaryMonth(dateInterval: DateInterval, month: string ):boolean {
-        return isSameMonth(dateInterval.from, month) || isSameMonth(dateInterval.to,month)
-    }
+    // function isRangeBoundaryMonth(dateInterval: DateInterval, month: string ):boolean {
+    //     return isSameMonth(dateInterval.from, month) || isSameMonth(dateInterval.to,month)
+    // }
 
-    function isInRangeMonth(dateInterval: DateInterval, month: string):boolean {
-        return isAfterMonth(dateInterval.from, month) && isBeforeMonth(dateInterval.to, month)
-    }
+    // function isInRangeMonth(dateInterval: DateInterval, month: string):boolean {
+    //     return isAfterMonth(dateInterval.from, month) && isBeforeMonth(dateInterval.to, month)
+    // }
 
-    function isBeforeMonth(date: Date, month:string):boolean {
-        return  new Date(date.getFullYear(), date.getMonth()).getTime() > new Date(props.showingDate!.getFullYear(), months.indexOf(month)).getTime()
-    }
+    // function isBeforeMonth(date: Date, month:string):boolean {
+    //     return  new Date(date.getFullYear(), date.getMonth()).getTime() > new Date(props.showingDate!.getFullYear(), months.indexOf(month)).getTime()
+    // }
 
-    function isAfterMonth(date: Date, month:string): boolean {
-        return new Date(date.getFullYear(), date.getMonth()).getTime() < new Date(props.showingDate!.getFullYear(), months.indexOf(month)).getTime()
-    }
+    // function isAfterMonth(date: Date, month:string): boolean {
+    //     return new Date(date.getFullYear(), date.getMonth()).getTime() < new Date(props.showingDate!.getFullYear(), months.indexOf(month)).getTime()
+    // }
 
 
 
-    function getMonthClasses(month:any) {
-        const now = new Date()
+    // function getMonthClasses(month:any) {
+    //     const now = new Date()
 
-        if (isRangeBoundaryMonth(props.dateInterval, month)) {
-            return 'selected-month'
-        }
-        return {
-            'current-month': isSameMonth(now,month),
-            'range-month': isInRangeMonth(props.dateInterval,month)
-        }
+    //     if (isRangeBoundaryMonth(props.dateInterval, month)) {
+    //         return 'selected-month'
+    //     }
+    //     return {
+    //         'current-month': isSameMonth(now,month),
+    //         'range-month': isInRangeMonth(props.dateInterval,month)
+    //     }
 
-    }
+    // }
 
     const emit = defineEmits<{
         (e: 'update-date', value: Date): Object
@@ -130,7 +127,7 @@
 
             </header>
 
-            <div v-if ="!props.showMonths">
+            <div>
 
                 <div class="dateTitle">{{showDateObj}}</div> 
 
@@ -150,13 +147,13 @@
 
             </div>
 
-            <div v-else>
+            <!-- <div v-else>
                 <div class="month-title">{{props.showingDate?.getFullYear()}}</div> 
                 <div class="calendar-months">
                     <div v-for="month in months" 
                     :class="['calendar-month' , getMonthClasses(month)]"  >{{month}}</div>
                 </div>
-            </div>
+            </div> -->
 
         </div>
     </div>
@@ -273,15 +270,7 @@ header {
     margin-top: 15px;
 }
 
-.calendar-month {
-    border: 1px solid rgb(168, 163, 163);
-    cursor: pointer;
-    width: 25px;
-    font-size: 14px;
-    margin: 0 5px;
-    margin-bottom: 15px;
-    padding: 5px 20px;
-}
+
 
 .month-title {
     position: absolute;

@@ -19,6 +19,8 @@ export function getMonths() {
     return arr
 }
 
+
+
 export function getAllDaysInMonth(date: Date) {
 
     let first = new Date(date.getFullYear(), date.getMonth(), 1)
@@ -77,6 +79,26 @@ export function formatDateTitle(dateObj:Date, options: Options= {}): string {
     return message
 
 }
+
+export function isSameDay(date1: Date, date2: Date): boolean {
+    return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate()
+}
+
+function getDateFixedToDay(date: Date) {
+    return  date.getTime() / (1000 * 60 * 60 * 24)
+}
+
+export function isBeforeDay(date1: Date, date2: Date): boolean {
+    return getDateFixedToDay(date1) > getDateFixedToDay(date2)
+}
+
+export function isAfterDay(date1: Date, date2: Date): boolean {
+    return getDateFixedToDay(date1) < getDateFixedToDay(date2)
+}
+
+
+
+
 
 
 

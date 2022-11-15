@@ -23,6 +23,8 @@ const props = defineProps ({
 
     })
 
+
+
 const visible = ref(true)
 const date = ref(new Date())
 const dateInterval: Ref<DateInterval> = ref({
@@ -126,6 +128,7 @@ dateInterval.value.from === dateInterval.value.to ? formatDateFull(date.value, {
             <SideBarVue @update-date="updateDate" v-if="props.showTypeMode" 
                 @update-date-interval="updateDateInterval" 
                 :show-months="props.showTypeDayMonth"
+               
             />
 
             <CalendarsWrapper 
@@ -143,7 +146,12 @@ dateInterval.value.from === dateInterval.value.to ? formatDateFull(date.value, {
 
             <div class="footer" v-if="!props.showTypeDayMonth">
                 <FooterVue  
-                    :date-interval="dateInterval" :show-type-day-month="props.showTypeDayMonth"/>
+                    :date-interval="dateInterval" 
+                    :show-type-day-month="props.showTypeDayMonth"
+                    :date="date"
+                
+                    
+                />
             </div>
 
            

@@ -234,8 +234,6 @@ const daySelected = (day: Date) => {
     flex-wrap: wrap;
     width: 250px;
     margin-top: 15px;
-
-    
 }
 
 .calendar-month {

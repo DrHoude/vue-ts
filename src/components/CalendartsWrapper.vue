@@ -5,6 +5,14 @@ import { ref,computed, Ref, PropType } from 'vue'
 
 import { DateInterval } from '../types'
 
+import DateCalendarVue from './DateCalendar.vue';
+
+import MonthCalendarVue from './MonthCalendar.vue';
+
+import DateVue from './test comp/Date.vue'
+import MonthVue from './test comp/Month.vue'
+
+
 
 const props = defineProps ({
     date: Date,
@@ -22,8 +30,7 @@ const props = defineProps ({
 
 const emit = defineEmits< {
     (e: 'update-date', value: Date):void
-    (e: 'updateDateInterval', value: DateInterval): void 
-
+    (e: 'updateDateInterval', value: DateInterval): void,
 }>()
 
 function updateDate(date: Date) {
@@ -31,52 +38,64 @@ function updateDate(date: Date) {
     
 }
 
-
-
-
-
 </script>
 
 
 <template>
-
     <div>
-        
-
         <div class="container">
-            <div :class="['calendar-container']" >
-                <Calendar 
-                :date="date"
-                :showingDate="calendarFromShowingDate" 
-                :showMonths="props.showTypeDayMonth" 
-                :leftArrow="true"
-                :dateInterval="props.dateInterval"
-             
-              
-             
-                @update-date ="updateDate" 
-                @moveBack="$emit('moveBack')"
-                @updateDateInterval="(value) => $emit('updateDateInterval', value)"
-              
-            />
+            <div class="calendar-container" v-if="!props.showTypeDayMonth">
 
-            <Calendar 
-                :date="date"
-                :showingDate="calendarToShowingDate" 
-                :showMonths="props.showTypeDayMonth" 
-                :rightArrow="true" 
-                :dateInterval="props.dateInterval"
-                @update-date="updateDate" 
-                @moveNext="$emit('moveNext')"
-                @updateDateInterval="(value) => $emit('updateDateInterval', value)"
-            /> 
+                <DateCalendarVue
+                    :date="date"
+                    :showingDate="calendarFromShowingDate" 
+                 
+                    :leftArrow="true"
+                    :dateInterval="props.dateInterval"
+                    @update-date ="updateDate" 
+                    @moveBack="$emit('moveBack')"
+                    @updateDateInterval="(value:any) => $emit('updateDateInterval', value)"
+                />
+
+                <DateCalendarVue
+                    :date="date"
+                    :showingDate="calendarToShowingDate" 
+                   
+                    :rightArrow="true" 
+                    :dateInterval="props.dateInterval"
+                    @update-date="updateDate" 
+                    @moveNext="$emit('moveNext')"
+                    @updateDateInterval="(value:any) => $emit('updateDateInterval', value)"
+                />
+            </div>
+
+
+            <div class="calendar-container" v-else>
+                <MonthCalendarVue
+                    
+                    :showingDate="calendarFromShowingDate" 
+                    :leftArrow="true"
+                    :dateInterval="props.dateInterval"
+                    @moveBack="$emit('moveBack')"
+                    @updateDateInterval="(value:DateInterval) => $emit('updateDateInterval', value)"
+                    @update-month="updateDate"
+                />
+
+                <MonthCalendarVue
+                  
+                    :showingDate="calendarToShowingDate" 
+                    :rightArrow="true" 
+                    :dateInterval="props.dateInterval"
+                    @moveNext="$emit('moveNext')"
+                    @updateDateInterval="(value:DateInterval) => $emit('updateDateInterval', value)"
+                    @update-month="updateDate"
+                />
             </div>
 
             
-            
-            
-           
-        </div> 
+        </div>
+
+    
 
     </div>
     

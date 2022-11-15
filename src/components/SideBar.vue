@@ -5,6 +5,7 @@ import { DateInterval } from '../types';
     const props = defineProps({
         date: Date,
         showMonths: Boolean,
+       
     })
 
     const emit = defineEmits< {
@@ -13,9 +14,11 @@ import { DateInterval } from '../types';
 
     }>()
 
+   
+
 
     function updateDate(date: Date) {
-    emit('update-date', date )
+        emit('update-date', date )
     
     }
 
@@ -101,6 +104,8 @@ import { DateInterval } from '../types';
 
             default: 
             updateInterval({from:new Date(), to: new Date()})
+           
+            
         }
     }
 

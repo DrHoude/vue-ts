@@ -6,9 +6,12 @@ import { PropType } from 'vue';
 import { formatDateFull } from '../utils';
 import { computed } from '@vue/reactivity';
 
+import { ref,Ref } from 'vue';
+
 
 const props = defineProps({
- 
+    date: Date,
+    timeInput: Boolean,
 
     dateInterval: {
             type: Object as PropType<DateInterval>,
@@ -24,6 +27,11 @@ const to = computed(()=>{
     return `${formatDateFull(props.dateInterval.to,{hideTime: true})}`
 })
 
+const time = computed(()=> {
+    return `${props.date?.getHours()}:${props.date?.getMinutes()}`
+})
+
+
 
 
 </script>
@@ -31,11 +39,13 @@ const to = computed(()=>{
 
 <template>
     <div class="wrapper">
-        <div>{{from}}</div>
-        <input type="time" :value="props.dateInterval.from">
-        <div>{{to}}</div>
-        <input type="time">
+        <label>{{from}}</label>
+        <input type="time" :value="time">
+        <label>{{to}}</label>
+        <input type="time" :value="time">
     </div>
+
+   
 </template>
 
 <style>
@@ -44,6 +54,7 @@ const to = computed(()=>{
         width: 400px;
         display: flex;
         justify-content: space-between;
+        align-items: center;
     }
 
 </style>
