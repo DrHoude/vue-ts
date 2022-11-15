@@ -29,7 +29,7 @@ const updateShowTypeTheme = (()=> {
 
   
 })
-console.log(showTypeTheme.value)
+
 
 </script>
 

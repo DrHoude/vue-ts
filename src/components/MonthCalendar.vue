@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
-    import { defineProps,computed,ref, PropType,Ref } from 'vue';
+    import { defineProps, PropType} from 'vue';
     import { DateInterval } from '../types';
-    import { formatDateTitle, getAllDaysInMonth, getMonths } from '../utils';
+    import { getMonths } from '../utils';
 
   
 
@@ -11,7 +11,6 @@
     const props = defineProps ({
      
         showingDate: Date,
-   
         leftArrow: Boolean,
         rightArrow: Boolean,
     

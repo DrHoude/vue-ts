@@ -21,7 +21,7 @@
    
     const week = ref(['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'])
 
-    // const months = getMonths()
+
 
 
     const showDateObj = computed(()=> {
@@ -57,42 +57,7 @@
         }
     }
 
- 
 
-    // function isSameMonth(date:Date, month:string):boolean {
-    //     return months[date.getMonth()] === month  && date.getFullYear() === props.showingDate?.getFullYear()
-    // }
-
-    // function isRangeBoundaryMonth(dateInterval: DateInterval, month: string ):boolean {
-    //     return isSameMonth(dateInterval.from, month) || isSameMonth(dateInterval.to,month)
-    // }
-
-    // function isInRangeMonth(dateInterval: DateInterval, month: string):boolean {
-    //     return isAfterMonth(dateInterval.from, month) && isBeforeMonth(dateInterval.to, month)
-    // }
-
-    // function isBeforeMonth(date: Date, month:string):boolean {
-    //     return  new Date(date.getFullYear(), date.getMonth()).getTime() > new Date(props.showingDate!.getFullYear(), months.indexOf(month)).getTime()
-    // }
-
-    // function isAfterMonth(date: Date, month:string): boolean {
-    //     return new Date(date.getFullYear(), date.getMonth()).getTime() < new Date(props.showingDate!.getFullYear(), months.indexOf(month)).getTime()
-    // }
-
-
-
-    // function getMonthClasses(month:any) {
-    //     const now = new Date()
-
-    //     if (isRangeBoundaryMonth(props.dateInterval, month)) {
-    //         return 'selected-month'
-    //     }
-    //     return {
-    //         'current-month': isSameMonth(now,month),
-    //         'range-month': isInRangeMonth(props.dateInterval,month)
-    //     }
-
-    // }
 
     const emit = defineEmits<{
         (e: 'update-date', value: Date): Object
@@ -107,9 +72,9 @@
 
   
 
-    function updateDateInterval() {
-        emit('updateDateInterval', props.dateInterval)
-    }
+    // function updateDateInterval() {
+    //     emit('updateDateInterval', props.dateInterval)
+    // }
 
 </script>
 
@@ -144,17 +109,7 @@
                         {{ dateObj.getDate() }}
                     </div>
                 </div>
-
             </div>
-
-            <!-- <div v-else>
-                <div class="month-title">{{props.showingDate?.getFullYear()}}</div> 
-                <div class="calendar-months">
-                    <div v-for="month in months" 
-                    :class="['calendar-month' , getMonthClasses(month)]"  >{{month}}</div>
-                </div>
-            </div> -->
-
         </div>
     </div>
 

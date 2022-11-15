@@ -12,7 +12,7 @@ const props = defineProps ({
         showTypeMode: Boolean
     })
 
-console.log(props.showTypeMode)
+
 const emit = defineEmits< {
     (e: 'updateShowTime'): void
     (e: 'updateTypeValue'): void
@@ -23,7 +23,6 @@ const selectedType = computed(() => props.showTypeDayMonth ? 'Month': 'Day')
 const selectedShowTime = computed(() => props.showTime ? 'Yes': 'No')
 const selectedMode = computed(() => props.showTypeMode ? 'Multi': 'Single')
 
-console.log(selectedShowTime.value)
 
 
 
