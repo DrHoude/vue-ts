@@ -55,6 +55,7 @@ function updateDate(date: Date) {
                     @update-date ="updateDate" 
                     @moveBack="$emit('moveBack')"
                     @updateDateInterval="(value:any) => $emit('updateDateInterval', value)"
+                   
                 />
 
                 <DateCalendarVue
@@ -66,6 +67,7 @@ function updateDate(date: Date) {
                     @update-date="updateDate" 
                     @moveNext="$emit('moveNext')"
                     @updateDateInterval="(value:any) => $emit('updateDateInterval', value)"
+                  
                 />
             </div>
 

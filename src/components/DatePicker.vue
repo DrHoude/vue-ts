@@ -94,7 +94,15 @@ function updateDate(newDate:Date) {
 
 function updateDateInterval(value: DateInterval) {
     dateInterval.value = value
-    calendarToShowingDate.value = value.to
+
+    if (!props.showTypeDayMonth) {
+        calendarToShowingDate.value = value.to
+    } 
+    if(props.showTypeDayMonth) {
+        let date = new Date()
+        date.setFullYear(value.to.getFullYear())
+        calendarToShowingDate.value = date
+    }
   
 }
 
@@ -149,7 +157,7 @@ dateInterval.value.from === dateInterval.value.to ? formatDateFull(date.value, {
                     :date-interval="dateInterval" 
                     :show-type-day-month="props.showTypeDayMonth"
                     :date="date"
-                
+                    @update-date-interval="updateDateInterval"
                     
                 />
             </div>

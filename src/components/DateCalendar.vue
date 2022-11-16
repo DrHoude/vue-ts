@@ -71,10 +71,34 @@
     }
 
   
+    let isMouseDown = false;
 
-    // function updateDateInterval() {
-    //     emit('updateDateInterval', props.dateInterval)
-    // }
+    function updateDateInterval(dateInterval:DateInterval) {
+        emit('updateDateInterval', dateInterval)
+    }
+
+    function handleMouseUp() {
+        console.log('mouseUp')
+        removeEventListener('mouseup', handleMouseUp)
+        isMouseDown = false;
+        
+
+    }
+
+    function handleMouseDown(date:Date) {
+        console.log(date)
+        updateDateInterval({from: date, to: date})
+       addEventListener('mouseup', handleMouseUp)
+       isMouseDown = true;
+    }
+
+    function handleMouseEnter(date:Date) {
+        if (isMouseDown && isAfterDay(props.dateInterval.from, date) ) {
+            console.log(date)
+            updateDateInterval({from: props.dateInterval.from, to: date})
+        }
+
+    }
 
 </script>
 
@@ -105,6 +129,8 @@
 
                     <div class="calendar-day"
                         v-for="dateObj in dateObjs" @click="daySelected(dateObj)"
+                        @mousedown="handleMouseDown(dateObj)"
+                        @mouseenter="handleMouseEnter(dateObj)"
                         :class="getDateClasses(dateObj)">
                         {{ dateObj.getDate() }}
                     </div>
@@ -123,7 +149,8 @@
 
 .calendar {
     width: 200px;
-    position: relative;
+    position: relative; 
+    user-select: none;
 }
 
 .dateTitle {

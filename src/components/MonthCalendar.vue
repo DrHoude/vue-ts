@@ -20,6 +20,8 @@
         }
  
     })
+
+    console.log(props.dateInterval.to)
    
 
 
