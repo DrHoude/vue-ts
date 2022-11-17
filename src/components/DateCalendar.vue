@@ -6,6 +6,7 @@
     import {isSameDay, isBeforeDay, isAfterDay } from '../utils'
 
     const props = defineProps ({
+        isLast: Boolean,
         date: Date,
         showingDate: Date,
     
@@ -64,41 +65,56 @@
         (e: 'moveBack'):void
         (e: 'moveNext'):void
         (e: 'updateDateInterval', value: DateInterval ): void 
+        (e:'handleMouseDown', value: Date): void
+        (e: 'handleMouseEnter', date: Date, lastDate: Date):void
+        (e:'updateisLast'):void
     }>()
 
     const daySelected = (date: Date) => {
         emit('update-date', date )
-    }
 
-  
-    let isMouseDown = false;
-
-    function updateDateInterval(dateInterval:DateInterval) {
-        emit('updateDateInterval', dateInterval)
-    }
-
-    function handleMouseUp() {
-        console.log('mouseUp')
-        removeEventListener('mouseup', handleMouseUp)
-        isMouseDown = false;
         
 
+      
     }
 
-    function handleMouseDown(date:Date) {
-        console.log(date)
-        updateDateInterval({from: date, to: date})
-       addEventListener('mouseup', handleMouseUp)
-       isMouseDown = true;
+    function mouseEnter(date:Date) {
+        emit('handleMouseEnter',date, dateObjs.value[dateObjs.value.length-1])
     }
 
-    function handleMouseEnter(date:Date) {
-        if (isMouseDown && isAfterDay(props.dateInterval.from, date) ) {
-            console.log(date)
-            updateDateInterval({from: props.dateInterval.from, to: date})
-        }
 
-    }
+  
+  
+    // let isMouseDown = false;
+
+    // function updateDateInterval(dateInterval:DateInterval) {
+    //     emit('updateDateInterval', dateInterval)
+    // }
+
+    // function handleMouseUp() {
+    //     console.log('mouseUp')
+    //     removeEventListener('mouseup', handleMouseUp)
+    //     isMouseDown = false;
+        
+
+    // }
+
+    // function handleMouseDown(date:Date) {
+    //     console.log(date)
+    //     updateDateInterval({from: date, to: date})
+    //    addEventListener('mouseup', handleMouseUp)
+    //    isMouseDown = true;
+    // }
+
+    // function handleMouseEnter(date:Date) {
+    //     console.log(isMouseDown)
+    //     if (isMouseDown && isAfterDay(props.dateInterval.from, date) ) {
+    //         console.log(date)
+    //         updateDateInterval({from: props.dateInterval.from, to: date})
+    //     }
+
+    // }
+
 
 </script>
 
@@ -129,8 +145,12 @@
 
                     <div class="calendar-day"
                         v-for="dateObj in dateObjs" @click="daySelected(dateObj)"
-                        @mousedown="handleMouseDown(dateObj)"
-                        @mouseenter="handleMouseEnter(dateObj)"
+                        
+                        @mousedown = "$emit('handleMouseDown', dateObj)"
+                       
+                        @mouseenter = "mouseEnter(dateObj)"
+                       
+
                         :class="getDateClasses(dateObj)">
                         {{ dateObj.getDate() }}
                     </div>

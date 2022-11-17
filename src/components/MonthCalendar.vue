@@ -2,7 +2,7 @@
 
     import { defineProps, PropType} from 'vue';
     import { DateInterval } from '../types';
-    import { getMonths } from '../utils';
+    import { getMonths, isAfterMonth, isBeforeMonth, isSameMonth } from '../utils';
 
   
 
@@ -27,44 +27,37 @@
 
     const months = getMonths()
 
-    function isSameMonth(date:Date, month:string):boolean {
-        return  new Date(date.getFullYear(), date.getMonth()).getTime() === new Date(props.showingDate!.getFullYear(), months.indexOf(month)).getTime()  
-    }
-     
-
-    function isRangeBoundaryMonth(dateInterval: DateInterval, month: string ):boolean {
-        return isSameMonth(dateInterval.from, month) || isSameMonth(dateInterval.to,month)
+    function isRangeBoundaryMonth(dateInterval: DateInterval, date: Date ):boolean {
+        return isSameMonth(dateInterval.from, date) || isSameMonth(dateInterval.to,date)
     }
 
-    function isInRangeMonth(dateInterval: DateInterval, month: string):boolean {
-        return isAfterMonth(dateInterval.from, month) && isBeforeMonth(dateInterval.to, month)
+    function isInRangeMonth(dateInterval: DateInterval, date: Date):boolean {
+        return isAfterMonth(dateInterval.from, date) && isBeforeMonth(dateInterval.to, date)
     }
-
-    function isBeforeMonth(date: Date, month:string):boolean {
-        return  new Date(date.getFullYear(), date.getMonth()).getTime() > new Date(props.showingDate!.getFullYear(), months.indexOf(month)).getTime()
-    }
-
-    function isAfterMonth(date: Date, month:string): boolean {
-        return new Date(date.getFullYear(), date.getMonth()).getTime() < new Date(props.showingDate!.getFullYear(), months.indexOf(month)).getTime()
-    }
-
 
 
     function getMonthClasses(month:any) {
         const now = new Date()
+        const d = new Date()
+        d.setFullYear(props.showingDate!.getFullYear())
+        d.setMonth(months.indexOf(month))
 
-        if (isRangeBoundaryMonth(props.dateInterval, month)) {
+        if (isRangeBoundaryMonth(props.dateInterval, d)) {
             return 'selected-month'
         }
         return {
-            'current-month': isSameMonth(now,month),
-            'range-month': isInRangeMonth(props.dateInterval,month)
+            'current-month': isSameMonth(now,d),
+            'range-month': isInRangeMonth(props.dateInterval,d)
         }
 
     }
 
     const emit = defineEmits<{
         (e: 'update-month', value: Date): Object
+        (e:'updateDateInterval', dateInterval:DateInterval):void
+        (e:'handleMouseDown', value:Date):void
+        (e:'handleMouseEnter', value:Date):void
+        (e:'updateLast',value:boolean):void
         
     }>()
 
@@ -73,6 +66,59 @@
         date.setFullYear(props.showingDate!.getFullYear())
         date.setMonth(months.indexOf(month))
         emit('update-month', date )
+    }
+
+
+
+
+
+    // let isMouseDown = false;
+
+    // function updateDateInterval(dateInterval:DateInterval) {
+    //     emit('updateDateInterval', dateInterval)
+    // }
+
+    // function handleMouseUp() {
+    //     console.log('mouseUp')
+    //     removeEventListener('mouseup', handleMouseUp)
+    //     isMouseDown = false;
+        
+
+    // }
+
+    // function handleMouseDown(month:string) {
+    //     console.log(month)
+
+    //     console.log(props.showingDate)
+
+    //     let newDate = new Date()
+    //     newDate.setFullYear(props.showingDate!.getFullYear())
+    //     newDate.setMonth(months.indexOf(month))
+    //     updateDateInterval({from: newDate, to: newDate})
+    //    addEventListener('mouseup', handleMouseUp)
+    //    isMouseDown = true;
+    // }
+
+    function mouseDown(month:string) {
+        let newDate = new Date()
+        newDate.setFullYear(props.showingDate!.getFullYear())
+        newDate.setMonth(months.indexOf(month))
+
+        emit('handleMouseDown', newDate )
+
+
+
+    }
+
+    function mouseEnter(month:string) {
+     
+            let newDate = new Date()
+            newDate.setFullYear(props.showingDate!.getFullYear())
+            newDate.setMonth(months.indexOf(month))
+
+            if(isAfterMonth(props.dateInterval.from, newDate)) {
+                emit('handleMouseEnter', newDate)
+            }
     }
 
 </script>
@@ -95,6 +141,8 @@
                 <div class="month-title">{{props.showingDate?.getFullYear()}}</div> 
                 <div class="calendar-months">
                     <div v-for="month in months" 
+                        @mousedown = "mouseDown(month)"
+                        @mouseenter = "mouseEnter(month)"
                     :class="['calendar-month' , getMonthClasses(month)]"  @click="monthSelected(month)">{{month}}</div>
                 </div>
             </div>
@@ -113,6 +161,8 @@
 .calendar {
     width: 200px;
     position: relative;
+
+    user-select: none;
 }
 
 header {

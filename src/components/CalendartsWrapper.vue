@@ -9,8 +9,8 @@ import DateCalendarVue from './DateCalendar.vue';
 
 import MonthCalendarVue from './MonthCalendar.vue';
 
-import DateVue from './test comp/Date.vue'
-import MonthVue from './test comp/Month.vue'
+
+import { isAfterDay, isAfterMonth, isSameDate } from '../utils';
 
 
 
@@ -26,16 +26,65 @@ const props = defineProps ({
         }
 })
 
-
-
 const emit = defineEmits< {
     (e: 'update-date', value: Date):void
-    (e: 'updateDateInterval', value: DateInterval): void,
+    (e: 'updateDateInterval', value: DateInterval): void
+    (e: 'moveNext'):void
 }>()
+
+let isMouseDown = false;
 
 function updateDate(date: Date) {
     emit('update-date', date )
-    
+}
+
+function updateInterval(value:DateInterval) {
+        emit('updateDateInterval', value)
+    }
+
+
+
+function handleMouseUp() {
+        console.log('mouseUp')
+        removeEventListener('mouseup', handleMouseUp)
+        isMouseDown = false;
+}
+
+function handleMouseDown(date: Date) {
+    updateInterval({from: date, to: date})
+    addEventListener('mouseup', handleMouseUp)
+    isMouseDown = true;
+}
+
+function handleMouseEnterDay(date: Date, lastDay: Date) {
+    if(!isMouseDown) return
+
+    const dayCond = !props.showTypeDayMonth && isAfterDay(props.dateInterval.from, date)
+    if (!dayCond) return
+    const isLastDay = isSameDate(lastDay, date, 'day')
+
+    if (isLastDay) {
+        console.log('yes')
+        setTimeout(()=>emit('moveNext'),1000)
+    }
+
+    updateInterval({from: props.dateInterval.from, to: date})
+}
+
+function handleMouseEnterMonth(date: Date) {
+    if(!isMouseDown) return
+
+    const monthCond = props.showTypeDayMonth && isAfterMonth(props.dateInterval.from, date)
+    if (!monthCond) return
+
+    const lastMonth = new Date(props.calendarToShowingDate!.getFullYear(), 11)
+    const isLastMonth = isSameDate(lastMonth, date, 'month')
+
+    if (isLastMonth) {
+        setTimeout(()=>emit('moveNext'),1000)
+    }
+
+    updateInterval({from: props.dateInterval.from, to: date})
 }
 
 </script>
@@ -47,6 +96,7 @@ function updateDate(date: Date) {
             <div class="calendar-container" v-if="!props.showTypeDayMonth">
 
                 <DateCalendarVue
+                    :is-last="false"
                     :date="date"
                     :showingDate="calendarFromShowingDate" 
                  
@@ -55,10 +105,18 @@ function updateDate(date: Date) {
                     @update-date ="updateDate" 
                     @moveBack="$emit('moveBack')"
                     @updateDateInterval="(value:any) => $emit('updateDateInterval', value)"
+
+                    @handle-mouse-down="handleMouseDown"
+                    @handle-mouse-enter="handleMouseEnterDay"
+
+                    
+
+                    
                    
                 />
 
                 <DateCalendarVue
+                    :is-last="true"
                     :date="date"
                     :showingDate="calendarToShowingDate" 
                    
@@ -67,7 +125,9 @@ function updateDate(date: Date) {
                     @update-date="updateDate" 
                     @moveNext="$emit('moveNext')"
                     @updateDateInterval="(value:any) => $emit('updateDateInterval', value)"
-                  
+
+                    @handle-mouse-down="handleMouseDown"
+                    @handle-mouse-enter="handleMouseEnterDay"
                 />
             </div>
 
@@ -81,6 +141,9 @@ function updateDate(date: Date) {
                     @moveBack="$emit('moveBack')"
                     @updateDateInterval="(value:DateInterval) => $emit('updateDateInterval', value)"
                     @update-month="updateDate"
+
+                    @handle-mouse-down="handleMouseDown"
+                    @handle-mouse-enter="handleMouseEnterMonth"
                 />
 
                 <MonthCalendarVue
@@ -91,6 +154,9 @@ function updateDate(date: Date) {
                     @moveNext="$emit('moveNext')"
                     @updateDateInterval="(value:DateInterval) => $emit('updateDateInterval', value)"
                     @update-month="updateDate"
+
+                    @handle-mouse-down="handleMouseDown"
+                    @handle-mouse-enter="handleMouseEnterMonth"
                 />
             </div>
 

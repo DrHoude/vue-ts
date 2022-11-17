@@ -5,12 +5,18 @@ import { DateInterval } from '../types';
     const props = defineProps({
         date: Date,
         showMonths: Boolean,
+        selectedOption: String
        
     })
+
+    console.log(props.selectedOption)
+
+    
 
     const emit = defineEmits< {
         (e: 'update-date', value: Date):void
         (e: 'updateDateInterval', value: DateInterval):void
+        (e:'updateSelectedOption',value:any):void
 
     }>()
 
@@ -109,19 +115,22 @@ import { DateInterval } from '../types';
         }
     }
 
+
+
   
 
-    const selectedOption = ref<string | undefined>()
+    // const selectedOption = ref<string | undefined>()
 
 
     function handleOptionClick(option?: string) {
         updateDateByOption(option)
-        selectedOption.value = option
-        console.log(selectedOption)
+        // selectedOption.value = option
+        // console.log(selectedOption)
+        emit('updateSelectedOption', option)
     }
 
     function getOptionClass(option?: string) {
-        return {"active-option": option === selectedOption.value}
+        return {"active-option": option === props.selectedOption}
     }
 
     const daysOptions = [

@@ -19,10 +19,10 @@ import { formatDateTitle } from '../utils';
 const props = defineProps ({
         showTime: Boolean,
         showTypeDayMonth: Boolean,
-        showTypeMode: Boolean
-
+        showTypeMode: Boolean,
     })
 
+const selectedOption = ref()
 
 
 const visible = ref(true)
@@ -37,30 +37,12 @@ watch(dateInterval, (value)=>{
 }, { deep: true })
 
 
+watch(selectedOption, (value)=>{
+    if (value !== undefined) {
+        calendarToShowingDate.value = dateInterval.value.to
+    }
+})
 
-// const calendarFromShowingDate = ref(new Date(date.value))
-
-
-
-// const calendarToShowingDate = computed(() => {
-//     let nextObj = new Date(calendarFromShowingDate.value)
-//     if (props.showTypeDayMonth) {
-//         nextObj.setFullYear(calendarFromShowingDate.value.getFullYear()+1)
-//     } else {
-//         nextObj.setMonth(calendarFromShowingDate.value.getMonth()+1)
-//     }
-//     return nextObj
-// })
-
-
-// function updateShowingDateBack() {
-//     calendarFromShowingDate.value =  props.showTypeDayMonth ? new Date(calendarFromShowingDate.value.setFullYear(calendarFromShowingDate.value.getFullYear() - 1)) : new Date(calendarFromShowingDate.value.setMonth(calendarFromShowingDate.value.getMonth() - 1)) 
-// }
-
-
-// function updateShowingDateNext() {
-//     calendarFromShowingDate.value =  props.showTypeDayMonth ? new Date(calendarFromShowingDate.value.setFullYear(calendarFromShowingDate.value.getFullYear() + 1))  :  new Date(calendarFromShowingDate.value.setMonth(calendarFromShowingDate.value.getMonth() + 1)) 
-// }
 
 const calendarToShowingDate = ref(new Date(date.value))
 
@@ -90,25 +72,35 @@ function updateDate(newDate:Date) {
     from: newDate,
     to: newDate
    }
+   
+   if(selectedOption.value != undefined) {
+    selectedOption.value = undefined
+   }
+}
+
+function updateSelectedOption(option:string) {
+    console.log(option)
+    selectedOption.value = option
+    console.log(selectedOption.value)
+
+   
+
+
+    if(option != undefined) {
+        console.log(option)
+        
+    }
 }
 
 function updateDateInterval(value: DateInterval) {
-    dateInterval.value = value
-
-    if (!props.showTypeDayMonth) {
-        calendarToShowingDate.value = value.to
-    } 
-    if(props.showTypeDayMonth) {
-        let date = new Date()
-        date.setFullYear(value.to.getFullYear())
-        calendarToShowingDate.value = date
-    }
-  
+    dateInterval.value = value  
 }
 
 
 
 const currentDateString =  computed(()=> 
+
+
 
 props.showTypeDayMonth ? (dateInterval.value.from === dateInterval.value.to ? formatDateTitle(date.value): 
 
@@ -123,8 +115,6 @@ dateInterval.value.from === dateInterval.value.to ? formatDateFull(date.value, {
     hideTime: !props.showTime
 })}`);
 
-
-
 </script>
 
 <template>
@@ -136,6 +126,9 @@ dateInterval.value.from === dateInterval.value.to ? formatDateFull(date.value, {
             <SideBarVue @update-date="updateDate" v-if="props.showTypeMode" 
                 @update-date-interval="updateDateInterval" 
                 :show-months="props.showTypeDayMonth"
+                :selected-option="selectedOption"
+
+                @update-selected-option="updateSelectedOption"
                
             />
 
@@ -152,7 +145,7 @@ dateInterval.value.from === dateInterval.value.to ? formatDateFull(date.value, {
                 @update-date-interval="updateDateInterval"  
             />
 
-            <div class="footer" v-if="!props.showTypeDayMonth">
+            <div class="footer" v-if="props.showTime"  >
                 <FooterVue  
                     :date-interval="dateInterval" 
                     :show-type-day-month="props.showTypeDayMonth"

@@ -59,7 +59,9 @@ export function formatDateFull(dateObj: Date, options: Options = {}): string {
         hour = dateObj.getHours()
         minutes = dateObj.getMinutes()
 
-        message += `, ${hour}:${minutes}`
+        return hour < 10 && minutes < 10 ? message +=`, 0${hour}:0${minutes}` : message += `, ${hour}:${minutes}`
+
+        
     }
   
     return message
@@ -95,6 +97,36 @@ export function isAfterDay(date1: Date, date2: Date): boolean {
     return getDateFixedToDay(date1) < getDateFixedToDay(date2)
 }
 
+export function isAfterMonth(date1: Date, date2: Date): boolean {
+    return new Date(date1.getFullYear(), date1.getMonth()).getTime() < new Date(date2.getFullYear(), date2.getMonth()).getTime()
+}
+
+export function isSameMonth(date1:Date, date2: Date):boolean {
+    return  new Date(date1.getFullYear(), date1.getMonth()).getTime() === new Date(date2.getFullYear(), date2.getMonth()).getTime()  
+}
+ 
+
+export function isBeforeMonth(date1: Date, date2:Date):boolean {
+    return  new Date(date1.getFullYear(), date1.getMonth()).getTime() > new Date(date2.getFullYear(),date2.getMonth()).getTime()
+}
+
+export function isSameDate(date1: Date, date2: Date, granularity: 'day' | 'month' | 'year' | 'date' = 'date'): boolean {
+    const sameYear = date1.getFullYear() === date2.getFullYear()
+    const sameMonth = date1.getMonth() === date2.getMonth()
+    const sameDay = date1.getDate() === date2.getDate()
+    const sameDate = date1.getTime() === date2.getTime()
+
+    switch (granularity) {
+        case 'day':
+            return sameYear && sameMonth && sameDay
+        case 'month':
+            return sameYear && sameMonth
+        case 'year':
+            return sameYear
+        default:
+            return sameDate
+    }
+}
 
 
 
