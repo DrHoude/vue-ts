@@ -105,6 +105,8 @@ function mouseEnter(date: Date) {
 
                 <div class="card-info__days">
 
+                  
+
 
                     <div class="card-info__days_item" v-for="dateObj in dateObjs" @click="daySelected(dateObj)"
                         @mousedown="$emit('handleMouseDown', dateObj)" @mouseenter="mouseEnter(dateObj)"
@@ -123,7 +125,7 @@ function mouseEnter(date: Date) {
 
 <style scoped lang="scss">
 .calendar-card__item {
-    width: 200px;
+    width: 230px;
     position: relative;
     user-select: none;
 
@@ -199,6 +201,10 @@ function mouseEnter(date: Date) {
 .card-info__days_item {
     display: flex;
     flex: 1 1 auto;
+    width:20px;
+    height: 20px;
+    justify-content: center;
+    
 
 }
 

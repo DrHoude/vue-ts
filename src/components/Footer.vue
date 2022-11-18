@@ -84,11 +84,9 @@ const handleInputChange = (e: Event) => {
     }
 
     .footer-container__items {
-        width: 430px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 14px;
+       
+    
+            
     }
 
 </style>
