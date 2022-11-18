@@ -11,7 +11,8 @@ import { ref,Ref } from 'vue';
 
 const props = defineProps({
     date: Date,
-    timeInput: Boolean,
+    showTime:Boolean,
+
 
     dateInterval: {
             type: Object as PropType<DateInterval>,
@@ -62,11 +63,14 @@ const handleInputChange = (e: Event) => {
 
 
 <template>
-    <div class="wrapper">
-        <label>{{from}}</label>
-        <input type="time" :value="fromTime" name="from" @change="handleInputChange">
-        <label>{{to}}</label>
-        <input type="time" :value="toTime" name="to" @change="handleInputChange">
+    <div class="footer-container">
+        <div class="footer-container__items">
+            <label>{{from}}</label>
+            <input type="time" :value="fromTime" name="from" @change="handleInputChange">
+            <label>{{to}}</label>
+            <input type="time" :value="toTime" name="to" @change="handleInputChange">
+        </div>
+       
     </div>
 
    
@@ -74,11 +78,17 @@ const handleInputChange = (e: Event) => {
 
 <style>
 
-    .wrapper {
-        width: 400px;
+    .footer-container {
+        border-top: 1px solid rgb(218, 209, 209);
+        
+    }
+
+    .footer-container__items {
+        width: 430px;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        font-size: 14px;
     }
 
 </style>

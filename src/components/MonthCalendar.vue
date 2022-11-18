@@ -69,36 +69,6 @@
     }
 
 
-
-
-
-    // let isMouseDown = false;
-
-    // function updateDateInterval(dateInterval:DateInterval) {
-    //     emit('updateDateInterval', dateInterval)
-    // }
-
-    // function handleMouseUp() {
-    //     console.log('mouseUp')
-    //     removeEventListener('mouseup', handleMouseUp)
-    //     isMouseDown = false;
-        
-
-    // }
-
-    // function handleMouseDown(month:string) {
-    //     console.log(month)
-
-    //     console.log(props.showingDate)
-
-    //     let newDate = new Date()
-    //     newDate.setFullYear(props.showingDate!.getFullYear())
-    //     newDate.setMonth(months.indexOf(month))
-    //     updateDateInterval({from: newDate, to: newDate})
-    //    addEventListener('mouseup', handleMouseUp)
-    //    isMouseDown = true;
-    // }
-
     function mouseDown(month:string) {
         let newDate = new Date()
         newDate.setFullYear(props.showingDate!.getFullYear())
@@ -106,12 +76,11 @@
 
         emit('handleMouseDown', newDate )
 
-
-
     }
 
     function mouseEnter(month:string) {
      
+
             let newDate = new Date()
             newDate.setFullYear(props.showingDate!.getFullYear())
             newDate.setMonth(months.indexOf(month))
@@ -125,12 +94,12 @@
 
 <template>
 
-    <div class="calendar-wrapper">
+    <div class="calendar-card">
        
 
-        <div class="calendar">
+        <div class="month-card">
 
-            <header>
+            <header class="mont-card__buttons-wrapper">
                 <button v-if="props.leftArrow" class="btnPrevious" @click="$emit('moveBack')"></button>
                  
                 <button v-if="props.rightArrow"  class="btnNext" @click="$emit('moveNext')"></button>
@@ -138,12 +107,12 @@
             </header>
 
             <div>
-                <div class="month-title">{{props.showingDate?.getFullYear()}}</div> 
-                <div class="calendar-months">
+                <div class="month-card__title">{{props.showingDate?.getFullYear()}}</div> 
+                <div class="month-card__months">
                     <div v-for="month in months" 
                         @mousedown = "mouseDown(month)"
                         @mouseenter = "mouseEnter(month)"
-                    :class="['calendar-month' , getMonthClasses(month)]"  @click="monthSelected(month)">{{month}}</div>
+                    :class="['month-card__month', getMonthClasses(month)]"  @click="monthSelected(month)">{{month}}</div>
                 </div>
             </div>
 
@@ -158,19 +127,35 @@
 
 
 
-.calendar {
-    width: 200px;
+.month-card {
+    
     position: relative;
-
     user-select: none;
 }
 
-header {
+.mont-card__buttons-wrapper {
    position: relative;
    height: 20px;
    align-items: center;
    justify-content: center;
    margin: 15px 0;
+}
+
+.month-card__months{
+    display: flex ;
+    flex-wrap: wrap;
+    width: 250px;
+}
+
+.month-card__month {
+    border: 1px solid rgb(211, 201, 201);
+    cursor: pointer;
+    width: 25px;
+    font-size: 14px;
+    margin: 0 5px;
+    margin-bottom: 15px;
+    padding: 5px 20px;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 .btnNext {
@@ -181,7 +166,7 @@ header {
     border: none;
     background-color: white;
     position: absolute;
-    right: -25px;
+    right: -10px;
        
 }
 
@@ -196,28 +181,18 @@ header {
     left: -25px; 
 } 
 
-.calendar-months {
-    display: flex ;
-    flex-wrap: wrap;
-    width: 250px;
-    margin-top: 15px;
-}
 
-.calendar-month {
-    border: 1px solid rgb(168, 163, 163);
-    cursor: pointer;
-    width: 25px;
-    font-size: 14px;
-    margin: 0 5px;
-    margin-bottom: 15px;
-    padding: 5px 20px;
-}
 
-.month-title {
+
+
+.month-card__title  {
     position: absolute;
     top: 5px;
-    left: 50%;
+   left: 40%;
 }
+
+
+
 .current-month {
     color: blue;
 }

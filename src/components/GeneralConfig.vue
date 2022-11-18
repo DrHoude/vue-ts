@@ -35,16 +35,21 @@ const optionsMode = ref(['Single', 'Multi'])
 
 <template>
 
-    <div class="container">
-        <div>
+    <div class="config-container">
+        <div class="config-container__options">
             <h3>General Configuration</h3>
-            <!-- <RadioCompVue name="radio2" theme ="Show time" option1="Yes" option2="No" :value="selectedShowTime" @radio-click="emit('updateShowTime')"/>
-            <RadioCompVue name="radio3" theme ="Type" option1="Day" option2="Month" :value="selectedType" @radio-click="emit('updateTypeValue')"/>
-            <RadioCompVue name="radio4" theme ="Mode" option1="Single" option2="Multi" :value="selectedMode" @radio-click=""/> -->
 
-            <RadioCompVue name="radioTime" :options="optionsTime" :value="selectedShowTime" @radio-click="emit('updateShowTime')"/>
-            <RadioCompVue name="radioTypeDayMonth" :options="optionsType" :value="selectedType" @radio-click="emit('updateTypeValue')"/>
-            <RadioCompVue name="radioTypeMode" :options="optionsMode" :value="selectedMode" @radio-click="emit('updateTypeMode')"/> 
+            <div class="config-container__option"> Show Time:
+                <RadioCompVue name="radioTime" :options="optionsTime" :value="selectedShowTime" @radio-click="emit('updateShowTime')"/>
+            </div>
+
+            <div class="config-container__option">Type:
+                <RadioCompVue name="radioTypeDayMonth" :options="optionsType" :value="selectedType" @radio-click="emit('updateTypeValue')"/>
+            </div>
+
+            <div class="config-container__option">Mode:
+                <RadioCompVue name="radioTypeMode" :options="optionsMode" :value="selectedMode" @radio-click="emit('updateTypeMode')"/> 
+            </div>
 
           
         </div>
@@ -53,12 +58,12 @@ const optionsMode = ref(['Single', 'Multi'])
 </template>
 
 <style scoped>
-.container {
+.config-container {
     display: flex;
 }
 
-h1 {
-    margin: 0;
-    line-height: 40px;
+.config-container__option {
+    margin-bottom: 15px;
 }
+    
 </style>

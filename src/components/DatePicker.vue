@@ -1,16 +1,13 @@
 <script setup lang="ts">
 
 import InputVue from './Input.vue' 
-
 import CalendarsWrapper from './CalendartsWrapper.vue'
-
 import SideBarVue from './SideBar.vue';
-
 import FooterVue from './Footer.vue';
 
 import { DateInterval } from '../types'
 
-import { onMounted, ref, Ref, computed, watch } from 'vue';
+import { ref, Ref, computed, watch } from 'vue';
 import { formatDateFull } from '../utils';
 
 import { formatDateTitle } from '../utils';
@@ -79,33 +76,17 @@ function updateDate(newDate:Date) {
 }
 
 function updateSelectedOption(option:string) {
-    console.log(option)
     selectedOption.value = option
-    console.log(selectedOption.value)
-
-   
-
-
-    if(option != undefined) {
-        console.log(option)
-        
-    }
 }
 
 function updateDateInterval(value: DateInterval) {
     dateInterval.value = value  
 }
 
-
-
 const currentDateString =  computed(()=> 
-
-
-
 props.showTypeDayMonth ? (dateInterval.value.from === dateInterval.value.to ? formatDateTitle(date.value): 
 
 `${formatDateTitle(dateInterval.value.from)} - ${formatDateTitle(dateInterval.value.to)}`) :
-
 
 dateInterval.value.from === dateInterval.value.to ? formatDateFull(date.value, {
     hideTime: !props.showTime
@@ -118,7 +99,7 @@ dateInterval.value.from === dateInterval.value.to ? formatDateFull(date.value, {
 </script>
 
 <template>
-    <div class="container">
+    <div class="date-container">
         <InputVue :current-date-string="currentDateString " @click="visible=!visible"/>
 
         <div class="calendar-container" v-if="visible">
@@ -127,12 +108,11 @@ dateInterval.value.from === dateInterval.value.to ? formatDateFull(date.value, {
                 @update-date-interval="updateDateInterval" 
                 :show-months="props.showTypeDayMonth"
                 :selected-option="selectedOption"
-
                 @update-selected-option="updateSelectedOption"
                
             />
-
-            <CalendarsWrapper 
+            <div>
+                <CalendarsWrapper 
                 :date="date" 
                 :calendarFromShowingDate="calendarFromShowingDate"
                 :calendarToShowingDate="calendarToShowingDate"
@@ -145,41 +125,42 @@ dateInterval.value.from === dateInterval.value.to ? formatDateFull(date.value, {
                 @update-date-interval="updateDateInterval"  
             />
 
-            <div class="footer" v-if="props.showTime"  >
+            <div v-if="!props.showTypeDayMonth  && props.showTime">
                 <FooterVue  
                     :date-interval="dateInterval" 
-                    :show-type-day-month="props.showTypeDayMonth"
+                    :show-time="props.showTime"
                     :date="date"
-                    @update-date-interval="updateDateInterval"
-                    
+                    @update-date-interval="updateDateInterval" 
                 />
             </div>
+            </div>
 
-           
+          
+
+            
         </div>
-        
+     
     </div>
     
 </template>
 
 <style scoped>
-    .container {
+    .date-container {
         margin-left: 30px;  
         position: relative;
     }
-    .footer {
-        position: absolute;
-        top: 85%;
-        left: 40%;
-    }
-
     .calendar-container {
         display: flex;
         background-color: white;
-        height: 350px;
-        width: 800px;
         margin-top: 20px;
-        padding: 0 15px;
+    
         justify-content: space-around;
     }
+    .calendar-container__footer {
+        position: absolute;
+        top: 88%;
+        left: 30%;
+        font-size: 14px;
+        color:  rgb(99, 93, 93);;
+    }   
 </style>

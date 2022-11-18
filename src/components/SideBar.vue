@@ -9,7 +9,7 @@ import { DateInterval } from '../types';
        
     })
 
-    console.log(props.selectedOption)
+   const hover = ref(false)
 
     
 
@@ -74,13 +74,10 @@ import { DateInterval } from '../types';
                 updateInterval({from:from, to: new Date()})
                 break;
 
-
-
-       
             case 'showThisMonth':
-            newDate = new Date()
-            updateDate(newDate!)
-            break;
+                newDate = new Date()
+                updateDate(newDate!)
+                break;
 
 
             case 'showLastMonth':
@@ -109,28 +106,17 @@ import { DateInterval } from '../types';
                 break;
 
             default: 
-            updateInterval({from:new Date(), to: new Date()})
-           
-            
+            updateInterval({from:new Date(), to: new Date()}) 
         }
     }
 
-
-
-  
-
-    // const selectedOption = ref<string | undefined>()
-
-
     function handleOptionClick(option?: string) {
         updateDateByOption(option)
-        // selectedOption.value = option
-        // console.log(selectedOption)
         emit('updateSelectedOption', option)
     }
 
     function getOptionClass(option?: string) {
-        return {"active-option": option === props.selectedOption}
+        return {"calendar-sideBar__item_selected": option === props.selectedOption }
     }
 
     const daysOptions = [
@@ -142,8 +128,6 @@ import { DateInterval } from '../types';
         {value:'Whole period', key: 'showWholePeriod'},
         {value:'Custom', key: undefined}
     ]
-
-
 
     const monthsOptions = [
         {value:'This Month', key:'showThisMonth'},
@@ -158,16 +142,22 @@ import { DateInterval } from '../types';
 
 
 <template>
-    <div class="options" >
-        <ul v-if="!props.showMonths" >
+    <div class="calendar-sideBar" >
+
+        <div class="calendar-sideBar__header">SELECT BY</div>
+
+        <ul v-if="!props.showMonths" class="calendar-sideBar__content" >
             <li v-for="(dayOption, index) in daysOptions" :key="index"
-                :class="getOptionClass(dayOption.key)">
-                <input type="button" :value="dayOption.value" @click="handleOptionClick(dayOption.key)"></li>
+                :class="getOptionClass(dayOption.key)" class="calendar-sideBar__item" 
+            >
+            <input   type="button" :value="dayOption.value" @click="handleOptionClick(dayOption.key)" class=" calendar-sideBar__input"
+            @mouseover="hover = true" @mouseleave="hover=false"></li>
         </ul>
-        <ul v-else>
+
+        <ul v-else class="calendar-sideBar__content">
             <li v-for="(monthOption, index) in monthsOptions" :key="index"
-                :class="getOptionClass(monthOption.key)">
-                <input type="button" :value="monthOption.value" @click="handleOptionClick(monthOption.key)"></li>
+                :class="getOptionClass(monthOption.key)" class="calendar-sideBar__item" >
+            <input  type="button" :value="monthOption.value" @click="handleOptionClick(monthOption.key)" class=" calendar-sideBar__input "></li>
         </ul>
                 
     </div>
@@ -177,30 +167,44 @@ import { DateInterval } from '../types';
 
 
 <style scoped>
+    .calendar-sideBar {
+       padding: 20px 0 0 30px;
+        width: 120px;
+        border-right: 1px solid rgb(218, 209, 209);
+    
+    }
 
-    ul {
-            list-style: none;
-        }
+    .calendar-sideBar__header {
+        padding-left: 10px;
+        font-size: 10px;
+        color: grey;
+    }
 
-    input {
-        cursor: pointer;
+    .calendar-sideBar__content {
+        list-style: none;
+        padding: 0;
+    }
+
+    .calendar-sideBar__item {
+        
         border: none;
         background: none;
-        
+        width: 100px;
+        padding-bottom: 10px;  
     }
-
-    li {
-        background-color: white;
-        margin-top: 10px;
+    .calendar-sideBar__item:hover {
+        background-color: rgb(211, 197, 197);
     }
-
-    .active-option {
+    .calendar-sideBar__input {
+        cursor: pointer;
+        background: none;
+        border: none;
+    }
+    .calendar-sideBar__item_selected {
         background-color: blueviolet;
         color: white;
     }
 
-    .options {
-            margin-top: 20px;
-    }
+   
 
 </style>

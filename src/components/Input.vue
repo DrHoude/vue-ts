@@ -7,18 +7,19 @@ const props = defineProps ({
 </script>
 
 <template>
-    <div id="wrapper"> 
+    <div class="date-container__input"> 
         <div>{{props.currentDateString}}</div>
     </div>
 </template>
 
 <style scoped>
-#wrapper {
+.date-container__input {
     min-height: 20px;
     padding: 5px;
     margin-top: 10px;
-    max-width: 300px;
+    width: 200px;
     background-color: white;
+    font-size: 14px;
     
     
 }
