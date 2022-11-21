@@ -149,15 +149,17 @@ import { DateInterval } from '../types';
         <ul v-if="!props.showMonths" class="calendar-sideBar__content" >
             <li v-for="(dayOption, index) in daysOptions" :key="index"
                 :class="getOptionClass(dayOption.key)" class="calendar-sideBar__item" 
+                @click="handleOptionClick(dayOption.key)"
             >
-            <input   type="button" :value="dayOption.value" @click="handleOptionClick(dayOption.key)" class=" calendar-sideBar__input"
+            <input type="button" :value="dayOption.value"  class=" calendar-sideBar__input"
             @mouseover="hover = true" @mouseleave="hover=false"></li>
         </ul>
 
         <ul v-else class="calendar-sideBar__content">
             <li v-for="(monthOption, index) in monthsOptions" :key="index"
-                :class="getOptionClass(monthOption.key)" class="calendar-sideBar__item" >
-            <input  type="button" :value="monthOption.value" @click="handleOptionClick(monthOption.key)" class=" calendar-sideBar__input "></li>
+                :class="getOptionClass(monthOption.key)" class="calendar-sideBar__item" 
+                @click="handleOptionClick(monthOption.key)" >
+            <input  type="button" :value="monthOption.value"  class=" calendar-sideBar__input "></li>
         </ul>
                 
     </div>
@@ -166,45 +168,45 @@ import { DateInterval } from '../types';
 </template>
 
 
-<style scoped>
+<style scoped lang="scss">
     .calendar-sideBar {
        padding: 20px 0 0 30px;
         width: 120px;
         border-right: 1px solid rgb(218, 209, 209);
-    
-    }
 
-    .calendar-sideBar__header {
-        padding-left: 10px;
-        font-size: 10px;
-        color: grey;
-    }
+        &__header { 
+            padding-left: 10px;
+            font-size: 10px;
+            color: grey;
+        }
 
-    .calendar-sideBar__content {
-        list-style: none;
-        padding: 0;
-    }
+        &__content {
+            list-style: none;
+            padding: 0;
+        }
 
-    .calendar-sideBar__item {
-        
-        border: none;
-        background: none;
-        width: 100px;
-        padding-bottom: 10px;  
-    }
-    .calendar-sideBar__item:hover {
-        background-color: rgb(211, 197, 197);
-    }
-    .calendar-sideBar__input {
-        cursor: pointer;
-        background: none;
-        border: none;
-    }
-    .calendar-sideBar__item_selected {
-        background-color: blueviolet;
-        color: white;
-    }
+        &__item {
+            cursor: pointer;
+            border: none;
+            background: none;
+            width: 100px;
+            padding-bottom: 10px;  
 
-   
+            &:hover {
+                background-color: rgb(211, 197, 197);
+            }
+
+            &_selected {
+                background-color: blueviolet;
+                color: white;
+            }
+        }
+
+        &__input {
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+    }
 
 </style>

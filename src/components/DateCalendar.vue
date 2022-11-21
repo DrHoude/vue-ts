@@ -2,17 +2,17 @@
 
 import { defineProps, computed, ref, PropType } from 'vue';
 import { DateInterval } from '../types';
-import { formatDateTitle, getAllDaysInMonth, getMonths } from '../utils';
+import { formatDateTitle, getAllDaysInMonth } from '../utils';
 import { isSameDay, isBeforeDay, isAfterDay } from '../utils'
 
 const props = defineProps({
     isLast: Boolean,
     date: Date,
     showingDate: Date,
-
     leftArrow: Boolean,
     rightArrow: Boolean,
     arrLastWeek: Array,
+
     dateInterval: {
         type: Object as PropType<DateInterval>,
         required: true
@@ -89,9 +89,9 @@ function mouseEnter(date: Date) {
 
             <header class="calendar-card__buttons-wrapper">
 
-                <button v-if="props.leftArrow" class="btnPrevious" @click="$emit('moveBack')"></button>
+                <button v-if="props.leftArrow" class="calendar-card__buttons-wrapper calendar-card__buttons-wrapper_previous" @click="$emit('moveBack')"></button>
 
-                <button v-if="props.rightArrow" class="btnNext" @click="$emit('moveNext')"></button>
+                <button v-if="props.rightArrow" class="calendar-card__buttons-wrapper calendar-card__buttons-wrapper_next" @click="$emit('moveNext')"></button>
 
             </header>
 
@@ -100,19 +100,17 @@ function mouseEnter(date: Date) {
                 <div class="card-info__title">{{ showDateObj }}</div>
 
                 <div class="card-info__week">
-                    <div v-for="item in week" class="card-info__week card-info__week_item">{{ item }}</div>
+                    <div v-for="item in week" class="card-info__week-day">{{ item }}</div>
                 </div>
 
                 <div class="card-info__days">
 
-                  
-
-
-                    <div class="card-info__days_item" v-for="dateObj in dateObjs" @click="daySelected(dateObj)"
+                    <div class="card-info__day" v-for="dateObj in dateObjs" @click="daySelected(dateObj)"
                         @mousedown="$emit('handleMouseDown', dateObj)" @mouseenter="mouseEnter(dateObj)"
                         :class="getDateClasses(dateObj)">
                         {{ dateObj.getDate() }}
                     </div>
+
                 </div>
 
             </div>
@@ -124,95 +122,99 @@ function mouseEnter(date: Date) {
 </template>
 
 <style scoped lang="scss">
-.calendar-card__item {
-    width: 230px;
-    position: relative;
-    user-select: none;
 
-    padding: 0 20px 40px;
-  
+.calendar-card {
 
-    font-size: 14px;
-}
+    &__item {
+        width: 230px;
+        position: relative;
+        user-select: none;
+        padding: 0 20px 40px;
+        font-size: 14px;
+    }
 
-.calendar-card__buttons-wrapper {
-    position: relative;
-    height: 20px;
-    align-items: center;
-    justify-content: center;
-    margin: 15px 0;
+    &__buttons-wrapper {
+        position: relative;
+        height: 20px;
+        align-items: center;
+        justify-content: center;
+        margin: 15px 0;
 
-}
+        &_previous {
 
-.btnNext {
-    background-image: url(../assets/3.png);
-    background-size: cover;
-    height: 20px;
-    width: 20px;
-    border: none;
-    background-color: white;
-    position: absolute;
-    right: -25px;
+            background-image: url(../assets/2.png);
+            background-size: cover;
+            height: 20px;
+            width: 20px;
+            border: none;
+            background-color: white;
+            position: absolute;
+            left: -25px;
+            top: -10px;
+        }
 
-}
+        &_next {
 
-.btnPrevious {
-    background-image: url(../assets/2.png);
-    background-size: cover;
-    height: 20px;
-    width: 20px;
-    border: none;
-    background-color: white;
-    position: absolute;
-    left: -25px;
-}
-
-.card-info__title {
-    position: absolute;
-    top: 5px;
-    left: 70px;
-}
-
-.card-info__week {
-    display: flex;
-    margin-bottom: 10px;
-    background-color: white;
-    font-family: 'Courier New', Courier, monospace;
-    color: #1a1111;
-
-    &_item {
-        color: $color;
+            background-image: url(../assets/3.png);
+            background-size: cover;
+            height: 20px;
+            width: 20px;
+            border: none;
+            background-color: white;
+            position: absolute;
+            right: -25px;
+            top: -10px;
+        }
     }
 }
 
-.card-info__week_item {
-    display: flex;
-    flex: 1 1 auto;
+.card-info {
+
+    &__title {
+        position: absolute;
+        top: 5px;
+        left: 70px;
+    }
+
+    &__week {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 15px;
+        background-color: white;
+        font-family: 'Courier New', Courier, monospace;
+        color: #1a1111;
+      
+    }
+
+    &__week-day {
+        display: flex;
+        flex: 1 1 auto;
+
+    }
+
+    &__days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        row-gap: 10px;
+        background-color: white;
+        font-size: 12px;
+    }
+
+    &__day {
+      
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+    }
 }
-
-.card-info__days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    row-gap: 10px;
-    background-color: white;
-    font-size: 12px;
-}
-
-.card-info__days_item {
-    display: flex;
-    flex: 1 1 auto;
-    width:20px;
-    height: 20px;
-    justify-content: center;
-    
-
-}
-
 
 .selected-date {
     background-color: blue;
     color: white;
     border-radius: 100%;
+ 
 }
 
 .not-current-month-day {
@@ -231,54 +233,4 @@ function mouseEnter(date: Date) {
 
 
 
-
-/* 
-
-
-
-
-
-
-.weekIntervalPoints {
-    background-color: rgb(133, 133, 209);
-    border-radius: 100%;
-}
-
-    .calendar-card__week {
-        display: flex;
-        margin-bottom: 10px;
-        background-color: white;
-    }
-    
-    .current-date {
-  color: blue;
-} 
-  
-    .calendar-months {
-    display: flex ;
-    flex-wrap: wrap;
-    
-    width: 250px;
-    margin-top: 15px;
-}
-
-
-
-.month-title {
-    position: absolute;
-    top: 5px;
-    left: 50%;
-}
-.current-month {
-    color: blue;
-}
-
-.selected-month {
-    background-color: blue;
-    color: white;
-}
-
-.range-month {
-    background-color: aqua;
-} */
 </style>

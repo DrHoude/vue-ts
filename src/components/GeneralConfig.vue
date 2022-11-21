@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import RadioCompVue  from './RadioComp.vue';
-import CalendarVue from './Input.vue';
-
-import { onMounted, ref } from 'vue';
+import {  ref } from 'vue';
 import { computed } from '@vue/reactivity';
 
 
@@ -36,8 +34,10 @@ const optionsMode = ref(['Single', 'Multi'])
 <template>
 
     <div class="config-container">
+
         <div class="config-container__options">
-            <h3>General Configuration</h3>
+
+            <p class="config-container__title">General Configuration</p>
 
             <div class="config-container__option"> Show Time:
                 <RadioCompVue name="radioTime" :options="optionsTime" :value="selectedShowTime" @radio-click="emit('updateShowTime')"/>
@@ -51,19 +51,24 @@ const optionsMode = ref(['Single', 'Multi'])
                 <RadioCompVue name="radioTypeMode" :options="optionsMode" :value="selectedMode" @radio-click="emit('updateTypeMode')"/> 
             </div>
 
-          
         </div>
     </div>
 
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .config-container {
-    display: flex;
+
+    &__title {
+        font-size: 20px;
+    }
+
+    &__option {
+        padding: 8px;
+        font-size: 14px;
+    }
+
 }
 
-.config-container__option {
-    margin-bottom: 15px;
-}
     
 </style>

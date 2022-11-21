@@ -100,6 +100,7 @@ dateInterval.value.from === dateInterval.value.to ? formatDateFull(date.value, {
 
 <template>
     <div class="date-container">
+
         <InputVue :current-date-string="currentDateString " @click="visible=!visible"/>
 
         <div class="calendar-container" v-if="visible">
@@ -123,16 +124,16 @@ dateInterval.value.from === dateInterval.value.to ? formatDateFull(date.value, {
                 @moveBack="updateShowingDateBack"
                 @moveNext="updateShowingDateNext"
                 @update-date-interval="updateDateInterval"  
-            />
+                 />
 
-            <div v-if="!props.showTypeDayMonth  && props.showTime">
-                <FooterVue  
-                    :date-interval="dateInterval" 
-                    :show-time="props.showTime"
-                    :date="date"
-                    @update-date-interval="updateDateInterval" 
-                />
-            </div>
+                <div v-if="!props.showTypeDayMonth  && props.showTime">
+                    <FooterVue  
+                        :date-interval="dateInterval" 
+                        :show-time="props.showTime"
+                        :date="date"
+                        @update-date-interval="updateDateInterval" 
+                    />
+                </div>
             </div>
 
           
@@ -156,11 +157,5 @@ dateInterval.value.from === dateInterval.value.to ? formatDateFull(date.value, {
     
         justify-content: space-around;
     }
-    .calendar-container__footer {
-        position: absolute;
-        top: 88%;
-        left: 30%;
-        font-size: 14px;
-        color:  rgb(99, 93, 93);;
-    }   
+  
 </style>

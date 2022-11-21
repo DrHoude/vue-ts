@@ -139,14 +139,10 @@ function handleMouseEnterMonth(date: Date) {
 <style scoped>
 
     .calendar-container__cards {
-       padding: 0 20px;
-       
+        padding: 0 20px;
         width: 550px;
-  
         display: flex;
-       justify-content: space-around;   
-
-        /* border-bottom: 1px solid rgb(218, 209, 209); */
+        justify-content: space-around;   
     }
 
 

@@ -8,7 +8,7 @@ import { ref, computed } from 'vue'
 
 const showTimeType = ref(true);
 
-const showTypeDayMonth = ref(true);
+const showTypeDayMonth = ref(false);
 
 const showTypeTheme = ref(true);
 

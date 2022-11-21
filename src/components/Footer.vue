@@ -65,10 +65,17 @@ const handleInputChange = (e: Event) => {
 <template>
     <div class="footer-container">
         <div class="footer-container__items">
-            <label>{{from}}</label>
-            <input type="time" :value="fromTime" name="from" @change="handleInputChange">
-            <label>{{to}}</label>
-            <input type="time" :value="toTime" name="to" @change="handleInputChange">
+
+            <div>
+                <label>{{from}} - </label>
+                <input type="time" :value="fromTime" name="from" @change="handleInputChange">
+            </div>
+
+            <div>
+                <label>{{to}} - </label>
+                <input type="time" :value="toTime" name="to" @change="handleInputChange">
+            </div>
+           
         </div>
        
     </div>
@@ -76,17 +83,19 @@ const handleInputChange = (e: Event) => {
    
 </template>
 
-<style>
+<style scoped lang="scss">
 
     .footer-container {
         border-top: 1px solid rgb(218, 209, 209);
+        font-size: 14px;
         
-    }
-
-    .footer-container__items {
-       
-    
-            
+        &__items {
+            display: flex;
+            justify-content: space-around;
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 15px 0;   
+        } 
     }
 
 </style>

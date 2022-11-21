@@ -100,9 +100,9 @@
         <div class="month-card">
 
             <header class="mont-card__buttons-wrapper">
-                <button v-if="props.leftArrow" class="btnPrevious" @click="$emit('moveBack')"></button>
+                <button v-if="props.leftArrow" class="month-card__buttons-wrapper month-card__buttons-wrapper_previous"  @click="$emit('moveBack')"></button>
                  
-                <button v-if="props.rightArrow"  class="btnNext" @click="$emit('moveNext')"></button>
+                <button v-if="props.rightArrow"  class="month-card__buttons-wrapper month-card__buttons-wrapper_next"  @click="$emit('moveNext')"></button>
 
             </header>
 
@@ -123,73 +123,73 @@
     
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 
 
 
 .month-card {
-    
     position: relative;
     user-select: none;
+    padding-bottom: 20px;
+
+    &__buttons-wrapper {
+        position: absolute;
+        height: 20px;
+        align-items: center;
+        justify-content: center;
+        margin: 15px 0;
+
+        &_previous {
+            background-image: url(../assets/2.png);
+            background-size: cover;
+            height: 20px;
+            width: 20px;
+            border: none;
+            background-color: white;
+            position: absolute;
+            left: -25px; 
+            top: -15px;
+        }
+
+        &_next {
+            background-image: url(../assets/3.png);
+            background-size: cover;
+            height: 20px;
+            width: 20px;
+            border: none;
+            background-color: white;
+            position: absolute;
+            right: -10px;
+            top: -15px;
+        }
+
+    }
+
+    &__title {
+        margin: 20px 0 20px 100px;
+    }
+
+    &__months {
+        display: flex ;
+        flex-wrap: wrap;
+        width: 250px;
+    }
+
+    &__month {
+        border: 1px solid rgb(211, 201, 201);
+        cursor: pointer;
+        width: 25px;
+        font-size: 14px;
+        margin: 0 5px;
+        margin-bottom: 15px;
+        padding: 5px 20px;
+        font-family: 'Courier New', Courier, monospace;
+
+    }
 }
 
-.mont-card__buttons-wrapper {
-   position: relative;
-   height: 20px;
-   align-items: center;
-   justify-content: center;
-   margin: 15px 0;
-}
-
-.month-card__months{
-    display: flex ;
-    flex-wrap: wrap;
-    width: 250px;
-}
-
-.month-card__month {
-    border: 1px solid rgb(211, 201, 201);
-    cursor: pointer;
-    width: 25px;
-    font-size: 14px;
-    margin: 0 5px;
-    margin-bottom: 15px;
-    padding: 5px 20px;
-    font-family: 'Courier New', Courier, monospace;
-}
-
-.btnNext {
-    background-image: url(../assets/3.png);
-    background-size: cover;
-    height: 20px;
-    width: 20px;
-    border: none;
-    background-color: white;
-    position: absolute;
-    right: -10px;
-       
-}
-
-.btnPrevious  {
-    background-image: url(../assets/2.png);
-    background-size: cover;
-    height: 20px;
-    width: 20px;
-    border: none;
-    background-color: white;
-    position: absolute;
-    left: -25px; 
-} 
 
 
-
-
-
-.month-card__title  {
-    position: absolute;
-    top: 5px;
-   left: 40%;
-}
 
 
 
@@ -203,7 +203,7 @@
 }
 
 .range-month {
-    background-color: aqua;
+    background-color: rgba(52, 82, 255, 0.1);
 }
 
 </style>
