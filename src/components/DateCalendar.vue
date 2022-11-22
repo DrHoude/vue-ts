@@ -8,7 +8,7 @@ import { isSameDay, isBeforeDay, isAfterDay } from '../utils'
 const props = defineProps({
     isLast: Boolean,
     date: Date,
-    showingDate: Date,
+    // showingDate: Date,
     leftArrow: Boolean,
     rightArrow: Boolean,
     arrLastWeek: Array,
@@ -16,6 +16,10 @@ const props = defineProps({
     dateInterval: {
         type: Object as PropType<DateInterval>,
         required: true
+    },
+    showingDate: {
+        type: Date,
+        default: new Date()
     }
 
 })
@@ -47,14 +51,16 @@ function isInRange(dateInterval: DateInterval, date: Date): boolean {
 function getDateClasses(dateObj: Date) {
     const now = new Date()
 
-    if (isRangeBoundary(props.dateInterval, dateObj)) {
-        return 'selected-date'
-    }
+    // if (isRangeBoundary(props.dateInterval, dateObj)) {
+    //     return 'selected-date'
+    // }
 
     return {
         'not-current-month-day': props.showingDate?.getMonth() !== dateObj.getMonth(),
         'current-date': isSameDay(dateObj, now),
-        'range-date': isInRange(props.dateInterval, dateObj)
+        'range-date': isInRange(props.dateInterval, dateObj),
+        'selected-date': isRangeBoundary(props.dateInterval, dateObj)
+
     }
 }
 
@@ -89,9 +95,9 @@ function mouseEnter(date: Date) {
 
             <header class="calendar-card__buttons-wrapper">
 
-                <button v-if="props.leftArrow" class="calendar-card__buttons-wrapper calendar-card__buttons-wrapper_previous" @click="$emit('moveBack')"></button>
+                <button v-if="props.leftArrow" class=" calendar-card__buttons-wrapper_previous" @click="$emit('moveBack')"></button>
 
-                <button v-if="props.rightArrow" class="calendar-card__buttons-wrapper calendar-card__buttons-wrapper_next" @click="$emit('moveNext')"></button>
+                <button v-if="props.rightArrow" class="  calendar-card__buttons-wrapper_next" @click="$emit('moveNext')"></button>
 
             </header>
 
@@ -228,8 +234,6 @@ function mouseEnter(date: Date) {
 .range-date {
     background-color: rgba(52, 82, 255, 0.1);
 }
-
-
 
 
 

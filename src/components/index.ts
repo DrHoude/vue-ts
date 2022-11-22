@@ -1,5 +1,9 @@
-import CalendartsWrapper from './CalendartsWrapper.vue'
+import CalendarsWrapper from './CalendarsWrapper.vue'
+import DateCalendar from './DateCalendar.vue'
+import RadioComp from './RadioComp.vue'
 
 export {
-    CalendartsWrapper
+    CalendarsWrapper,
+    DateCalendar,
+    RadioComp
 }

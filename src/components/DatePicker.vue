@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import InputVue from './Input.vue' 
-import CalendarsWrapper from './CalendartsWrapper.vue'
+import CalendarsWrapper from './CalendarsWrapper.vue'
 import SideBarVue from './SideBar.vue';
 import FooterVue from './Footer.vue';
 

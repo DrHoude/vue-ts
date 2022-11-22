@@ -81,6 +81,7 @@ function handleMouseEnterMonth(date: Date) {
             <div class="calendar-container__cards" v-if="!props.showTypeDayMonth">
 
                 <DateCalendarVue
+                    data-test="calendar-from"
                     :is-last="false"
                     :date="date"
                     :showingDate="calendarFromShowingDate" 
