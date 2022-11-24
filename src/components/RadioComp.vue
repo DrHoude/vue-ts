@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import {ref} from 'vue'
+
 
 const props = defineProps({
     
@@ -15,10 +15,11 @@ const props = defineProps({
 
 <template>    
     <div class="radio-wrapper">
+     
     
-        <div v-for="option in props.options">
-            <input 
-            :name="name" type="radio" :checked="props.value === option"  @change="$emit('radio-click', $event)" />
+        <div v-for="option in props.options" >
+            <input
+            :name="name" type="radio" :checked="props.value === option"  @change="$emit('radio-click', $event)" data-test="inpt"/>
             <label>{{option}}</label>
         </div>
     </div>

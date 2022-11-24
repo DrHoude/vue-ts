@@ -27,13 +27,20 @@ describe('utils file', () => {
 
     describe('formateDateFull', ()=> {
       
-        it('should return string of date, hideTime', ()=> {
-            expect (formatDateFull(d1,{hideTime: true})).toBe(`Nov 22, 2022`)
+        it('should return string of date, hideTime: true', ()=> {
+            expect (formatDateFull(d1,{hideTime: true})).toBe(`Nov 24, 2022`)
         })
 
-        // it('should return string of date, !hideTime', ()=> {
-        //     expect (formatDateFull(d1,{hideTime:false})).toBe(`Nov 21, 2022, 16:22`)
-        // })
+        it('should return string of date,  hour > 0 && minutes > 0', ()=> {
+            let date = new Date(2022,10,23,11,11)
+            expect (formatDateFull(date,{hideTime:false})).toBe(`Nov 23, 2022, 11:11`)
+        })
+
+        it('should return string with time 00:00,  hour < 0 && minutes < 0',()=> {
+            let date = new Date(2022,10,1,0,0)
+           
+            expect (formatDateFull(date,{hideTime:false})).toBe(`Nov 1, 2022, 00:00`)
+        })
     })
 
     describe('formateDateTitle', ()=> {
@@ -77,8 +84,8 @@ describe('utils file', () => {
         })
 
         describe('case "day": d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate()', ()=> {
-            it('should return  false', ()=>{
-                expect(isSameDate(d1,d2, 'day')).toBe(false)
+            it('should return  true', ()=>{
+                expect(isSameDate(d1,d4, 'day')).toBe(true)
             })
         })
 

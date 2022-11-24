@@ -1,12 +1,9 @@
-
 import { DateCalendar } from "../../src/components"
-
-import { isSameDay } from "../../src/utils"
-
 import { mount } from '@vue/test-utils'
 
 
-describe('', ()=> {
+describe('test DateCalendar', ()=> {
+
     const from = new Date()
     from.setDate(from.getDate() - 1)
 
@@ -15,94 +12,142 @@ describe('', ()=> {
 
     const wrapper = mount(DateCalendar as any , { 
         props: {
-         
             dateInterval: {
                 from,
                 to
-            },
-
-            leftArrow: true,  
+            }
         },
-
-
-    })
-
-    it('', ()=> {
-
-         wrapper.find('.calendar-card__buttons-wrapper_previous').trigger('click')
-
-         expect(wrapper.emitted()).toHaveProperty('moveBack')
     })
 
     
 
-    it('', async ()=> {
-        const classes = wrapper.vm.getDateClasses(new Date())
+    describe('test getDateClasses method',  () => {
+        let data = new Date()
+      
+        describe('selected-date', ()=> {
 
-        console.log(classes)
+            describe('when the provided day is the same day as dateInterval.from || dateInterval.to', ()=> {
+                it('should return true', ()=> {
+                    const classes = wrapper.vm.getDateClasses(from)
+                    expect(classes['selected-date']).toBe(true)
+                })
+            })  
 
-        expect(classes['current-date']).toBe(true)
-
-        expect(classes['range-date']).toBe(true)
-
-       
-    })
-
-    it('', ()=> {
-        let date = new Date()
-        date.setMonth(date.getMonth()-1)
-
-        const classes = wrapper.vm.getDateClasses(date)
-
-        expect(classes['not-current-month-day']).toBe(true)
-    })
-
-
-    it('', ()=> {
-        let from = new Date()
-        let  to = new Date()
-
-        let date = new Date()
-        const classes = wrapper.vm.getDateClasses(date)
-        expect(classes['selected-date']).toBe(true)
-
-
-    })
-
-    describe('test emits of day element ', ()=> {
-
-        let day = wrapper.find('.card-info__day')
-
-        it('should return true', ()=> {
-            day.trigger('click')
-            
-            const updateDate = wrapper.emitted('update-date')
-            expect(updateDate).toHaveLength(1)
-
-            
+            describe('otherwise', ()=> {
+                it('should return true', ()=> {
+                    const classes = wrapper.vm.getDateClasses(new Date())
+                    expect(classes['selected-date']).not.toBeDefined()
+                })
+            })  
         })
-        
-        it('should return true', ()=> {
-            day.trigger('mousedown')
-            expect(wrapper.emitted()).toHaveProperty('handleMouseDown')
+
+
+        describe('current-date', ()=> {
+            describe('when the provided date is the same day as today', () => {
+                it('should return true', ()=> {
+                    const classes = wrapper.vm.getDateClasses(data)
+                    expect(classes['current-date']).toBe(true)
+                })
+            })
+
+            describe('otherwise', () => {
+                it('should return false', ()=> {
+                    const d = new Date()
+                    d.setDate(d.getDate() + 1)
+                    const classes = wrapper.vm.getDateClasses(d)
+                    expect(classes['current-date']).toBe(false)
+                })
+            })
         })
-    
+
+        describe('range-date', ()=> {
+            describe('when the provided date is between dateInterval.from and dateInterval.to', () => {
+                it('should return true', ()=> {
+                    const classes = wrapper.vm.getDateClasses(data)
+                    expect(classes['range-date']).toBe(true)
+                })
+            })
+
+            describe('otherwise', () => {
+                const el = new Date()
+                    el.setDate(from.getDate() - 1)
+                it('should return false', ()=> {
+                    const classes = wrapper.vm.getDateClasses(el)
+                    expect(classes['range-date']).toBe(false)
+                    
+                })
+            })
+           
+        })
+
+        describe('not-current-month-day', ()=> {
+
+            describe('when the provided date.getMonth() is different from current date.getMonth()', ()=> {
+                it('should return true', ()=> {
+                    let date = new Date()
+                    date.setMonth(date.getMonth()-1)
+                    const classes = wrapper.vm.getDateClasses(date)
+                    expect(classes['not-current-month-day']).toBe(true)
+                })
+            })
+
+            describe('otherwhise', ()=> {
+                it('should return false', ()=> {
+                    const classes = wrapper.vm.getDateClasses(new Date())
+                    expect(classes['not-current-month-day']).toBe(false)
+                })
+            })
+        }) 
     })
 
-  
+    describe('test event emitters', () => {
+        let day = wrapper.find('[data-test="day"]')
 
-    describe('test attributes', ()=> {
-
-        it('should return true ', ()=> {
-            let header = wrapper.find('header')
-            expect(header.attributes('class')).toBe('calendar-card__buttons-wrapper')
+        describe('click event should emit update-date',()=> {
+            it('should return true', ()=> {
+                day.trigger('click')
+                expect(wrapper.emitted()).toHaveProperty('update-date')
+            })
         })
+
+        describe('mouseenter event should emit handleMouseEnter',()=> {
+            it('should return true', ()=> {
+                day.trigger('mouseenter')
+                expect(wrapper.emitted()).toHaveProperty('handleMouseEnter')
+            })
+        })
+
+        describe('mousedown event should emit handleMouseDown',()=> {
+            it('should return true', ()=> {
+                day.trigger('mousedown')
+                expect(wrapper.emitted()).toHaveProperty('handleMouseDown')
+            })
+        })
+
     })
 
+    describe('test button event emit', ()=> {
 
+        describe(' emit moveBack', () => {
+          
+            it('should return true',async ()=> {
+                await wrapper.setProps({leftArrow: true})
 
+                let btn = wrapper.find('[data-test="back-button"]')
+                btn.trigger('click') 
+                expect(wrapper.emitted()).toHaveProperty('moveBack')
+            })
+        })
 
-
-   
-
+        describe('emit moveNext', () => {
+          
+            it('should  return true',async ()=> {
+                await wrapper.setProps({rightArrow: true})
+                
+                let btn = wrapper.find('[data-test="next-button"]')
+                btn.trigger('click') 
+                expect(wrapper.emitted()).toHaveProperty('moveNext')
+            })
+        })
+    })
 })

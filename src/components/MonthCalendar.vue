@@ -4,25 +4,26 @@
     import { DateInterval } from '../types';
     import { getMonths, isAfterMonth, isBeforeMonth, isSameMonth } from '../utils';
 
-  
-
-
 
     const props = defineProps ({
      
-        showingDate: Date,
+      
         leftArrow: Boolean,
         rightArrow: Boolean,
     
         dateInterval: {
             type: Object as PropType<DateInterval>,
             required: true
+        },
+
+        showingDate : {
+            type: Date,
+            default: new Date()
         }
+
+        
  
     })
-
-    console.log(props.dateInterval.to)
-   
 
 
     const months = getMonths()
@@ -35,19 +36,26 @@
         return isAfterMonth(dateInterval.from, date) && isBeforeMonth(dateInterval.to, date)
     }
 
+    function getMonthIndex(month: string) {
+        return months.indexOf(month)
+    }
 
-    function getMonthClasses(month:any) {
+
+    function getMonthClasses(month: number) {
         const now = new Date()
         const d = new Date()
         d.setFullYear(props.showingDate!.getFullYear())
-        d.setMonth(months.indexOf(month))
+        d.setMonth(month)
 
         if (isRangeBoundaryMonth(props.dateInterval, d)) {
-            return 'selected-month'
+            return { 'month-card__month_selected': true }
+        
         }
+
+
         return {
-            'current-month': isSameMonth(now,d),
-            'range-month': isInRangeMonth(props.dateInterval,d)
+            'month-card__month_current': isSameMonth(now,d),
+            'month-card__month_in-range': isInRangeMonth(props.dateInterval,d)
         }
 
     }
@@ -57,33 +65,31 @@
         (e:'updateDateInterval', dateInterval:DateInterval):void
         (e:'handleMouseDown', value:Date):void
         (e:'handleMouseEnter', value:Date):void
-        (e:'updateLast',value:boolean):void
-        
+        // (e:'updateLast',value:boolean):void
     }>()
 
-    const monthSelected = (month: string) => {
+    const monthSelected = (month: number) => {
         let date = new Date()
         date.setFullYear(props.showingDate!.getFullYear())
-        date.setMonth(months.indexOf(month))
+        date.setMonth(month)
         emit('update-month', date )
     }
 
 
-    function mouseDown(month:string) {
+    function mouseDown(month:number) {
         let newDate = new Date()
         newDate.setFullYear(props.showingDate!.getFullYear())
-        newDate.setMonth(months.indexOf(month))
+        newDate.setMonth(month)
 
         emit('handleMouseDown', newDate )
 
     }
 
-    function mouseEnter(month:string) {
+    function mouseEnter(month:number) {
      
-
             let newDate = new Date()
             newDate.setFullYear(props.showingDate!.getFullYear())
-            newDate.setMonth(months.indexOf(month))
+            newDate.setMonth(month)
 
             if(isAfterMonth(props.dateInterval.from, newDate)) {
                 emit('handleMouseEnter', newDate)
@@ -100,19 +106,23 @@
         <div class="month-card">
 
             <header class="mont-card__buttons-wrapper">
-                <button v-if="props.leftArrow" class="month-card__buttons-wrapper month-card__buttons-wrapper_previous"  @click="$emit('moveBack')"></button>
+                <button v-if="props.leftArrow" class="month-card__buttons-wrapper_previous" data-test="back-button" @click="$emit('moveBack')"></button>
                  
-                <button v-if="props.rightArrow"  class="month-card__buttons-wrapper month-card__buttons-wrapper_next"  @click="$emit('moveNext')"></button>
+                <button v-if="props.rightArrow"  class="month-card__buttons-wrapper_next" data-test="next-button"  @click="$emit('moveNext')"></button>
 
             </header>
 
             <div>
-                <div class="month-card__title">{{props.showingDate?.getFullYear()}}</div> 
+                <div class="month-card__title">{{props.showingDate.getFullYear()}}</div> 
                 <div class="month-card__months">
                     <div v-for="month in months" 
-                        @mousedown = "mouseDown(month)"
-                        @mouseenter = "mouseEnter(month)"
-                    :class="['month-card__month', getMonthClasses(month)]"  @click="monthSelected(month)">{{month}}</div>
+                        @mousedown = "mouseDown(getMonthIndex(month))"
+                        @mouseenter = "mouseEnter(getMonthIndex(month))"
+                        @click="monthSelected(getMonthIndex(month))"
+
+                        :class="['month-card__month', getMonthClasses(getMonthIndex(month))]"  
+                        data-test="month"
+                    >{{month}}</div>
                 </div>
             </div>
 

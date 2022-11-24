@@ -8,7 +8,6 @@ import { isSameDay, isBeforeDay, isAfterDay } from '../utils'
 const props = defineProps({
     isLast: Boolean,
     date: Date,
-    // showingDate: Date,
     leftArrow: Boolean,
     rightArrow: Boolean,
     arrLastWeek: Array,
@@ -24,7 +23,9 @@ const props = defineProps({
 
 })
 
-const week = ref(['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'])
+const weekDays = ref(['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'])
+
+
 
 
 
@@ -32,6 +33,9 @@ const week = ref(['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'])
 const showDateObj = computed(() => {
     return formatDateTitle(props.showingDate!)
 })
+
+
+
 
 
 const dateObjs = computed(() => {
@@ -51,16 +55,14 @@ function isInRange(dateInterval: DateInterval, date: Date): boolean {
 function getDateClasses(dateObj: Date) {
     const now = new Date()
 
-    // if (isRangeBoundary(props.dateInterval, dateObj)) {
-    //     return 'selected-date'
-    // }
+    if (isRangeBoundary(props.dateInterval, dateObj)) {
+        return { 'selected-date': true }
+    } 
 
     return {
         'not-current-month-day': props.showingDate?.getMonth() !== dateObj.getMonth(),
         'current-date': isSameDay(dateObj, now),
         'range-date': isInRange(props.dateInterval, dateObj),
-        'selected-date': isRangeBoundary(props.dateInterval, dateObj)
-
     }
 }
 
@@ -73,7 +75,7 @@ const emit = defineEmits<{
     (e: 'updateDateInterval', value: DateInterval): void
     (e: 'handleMouseDown', value: Date): void
     (e: 'handleMouseEnter', date: Date, lastDate: Date): void
-    (e: 'updateisLast'): void
+    // (e: 'updateisLast'): void
 }>()
 
 const daySelected = (date: Date) => {
@@ -82,6 +84,11 @@ const daySelected = (date: Date) => {
 
 function mouseEnter(date: Date) {
     emit('handleMouseEnter', date, dateObjs.value[dateObjs.value.length - 1])
+}
+
+function getDate(date:Date) {
+    return date.getDate()
+
 }
 
 </script>
@@ -95,26 +102,27 @@ function mouseEnter(date: Date) {
 
             <header class="calendar-card__buttons-wrapper">
 
-                <button v-if="props.leftArrow" class=" calendar-card__buttons-wrapper_previous" @click="$emit('moveBack')"></button>
+                <button v-if="props.leftArrow" class=" calendar-card__buttons-wrapper_previous" data-test="back-button" @click="$emit('moveBack')"></button>
 
-                <button v-if="props.rightArrow" class="  calendar-card__buttons-wrapper_next" @click="$emit('moveNext')"></button>
+                <button v-if="props.rightArrow" class="  calendar-card__buttons-wrapper_next" data-test="next-button" @click="$emit('moveNext')"></button>
 
             </header>
 
             <div class="card-info">
 
-                <div class="card-info__title">{{ showDateObj }}</div>
+                <div class="card-info__title" data-test = "title">{{ showDateObj }}</div>
 
                 <div class="card-info__week">
-                    <div v-for="item in week" class="card-info__week-day">{{ item }}</div>
+                    <div v-for="weekDay in weekDays" class="card-info__week-day">{{ weekDay }}</div>
                 </div>
 
                 <div class="card-info__days">
 
-                    <div class="card-info__day" v-for="dateObj in dateObjs" @click="daySelected(dateObj)"
+                    <div class="card-info__day" v-for="dateObj in dateObjs" @click="daySelected(dateObj)" data-test = "day"
                         @mousedown="$emit('handleMouseDown', dateObj)" @mouseenter="mouseEnter(dateObj)"
                         :class="getDateClasses(dateObj)">
-                        {{ dateObj.getDate() }}
+                        <!-- {{ dateObj.getDate() }} -->
+                        {{getDate(dateObj)}}
                     </div>
 
                 </div>
@@ -122,8 +130,6 @@ function mouseEnter(date: Date) {
             </div>
         </div>
     </div>
-
-
 
 </template>
 
