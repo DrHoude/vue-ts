@@ -45,7 +45,7 @@ import { DateInterval } from '../types';
             case 'showYesterday':
             newDate = new Date()
             newDate.setDate(newDate.getDate()-1)
-               updateDate(newDate!)
+            //    updateDate(newDate!)
                updateInterval({from:newDate, to: newDate})
                 break;
             case 'showWeek':

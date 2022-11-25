@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1669389359014" clover="3.2.0">
-  <project timestamp="1669389359015" name="All files">
-    <metrics statements="387" coveredstatements="341" conditionals="128" coveredconditionals="84" methods="90" coveredmethods="72" elements="605" coveredelements="497" complexity="0" loc="387" ncloc="387" packages="2" files="8" classes="8"/>
+<coverage generated="1669391628462" clover="3.2.0">
+  <project timestamp="1669391628462" name="All files">
+    <metrics statements="386" coveredstatements="340" conditionals="128" coveredconditionals="84" methods="90" coveredmethods="72" elements="604" coveredelements="496" complexity="0" loc="386" ncloc="386" packages="2" files="8" classes="8"/>
     <package name="src">
       <metrics statements="60" coveredstatements="60" conditionals="20" coveredconditionals="19" methods="12" coveredmethods="12"/>
       <file name="utils.ts" path="/home/opentechdev/Work/vite-project/src/utils.ts">
@@ -69,7 +69,7 @@
       </file>
     </package>
     <package name="src.components">
-      <metrics statements="327" coveredstatements="281" conditionals="108" coveredconditionals="65" methods="78" coveredmethods="60"/>
+      <metrics statements="326" coveredstatements="280" conditionals="108" coveredconditionals="65" methods="78" coveredmethods="60"/>
       <file name="CalendarsWrapper.vue" path="/home/opentechdev/Work/vite-project/src/components/CalendarsWrapper.vue">
         <metrics statements="56" coveredstatements="30" conditionals="37" coveredconditionals="11" methods="17" coveredmethods="7"/>
         <line num="3" count="6" type="cond" truecount="3" falsecount="0"/>
@@ -317,7 +317,7 @@
         <line num="52" count="6" type="stmt"/>
       </file>
       <file name="SideBar.vue" path="/home/opentechdev/Work/vite-project/src/components/SideBar.vue">
-        <metrics statements="84" coveredstatements="79" conditionals="18" coveredconditionals="16" methods="13" coveredmethods="9"/>
+        <metrics statements="83" coveredstatements="78" conditionals="18" coveredconditionals="16" methods="13" coveredmethods="9"/>
         <line num="3" count="6" type="stmt"/>
         <line num="6" count="6" type="stmt"/>
         <line num="7" count="6" type="stmt"/>
@@ -327,8 +327,8 @@
         <line num="22" count="15" type="stmt"/>
         <line num="23" count="15" type="stmt"/>
         <line num="24" count="15" type="stmt"/>
-        <line num="26" count="4" type="stmt"/>
-        <line num="29" count="12" type="stmt"/>
+        <line num="26" count="3" type="stmt"/>
+        <line num="29" count="10" type="stmt"/>
         <line num="32" count="12" type="stmt"/>
         <line num="34" count="12" type="cond" truecount="11" falsecount="1"/>
         <line num="36" count="2" type="stmt"/>
@@ -336,7 +336,6 @@
         <line num="41" count="2" type="stmt"/>
         <line num="43" count="1" type="stmt"/>
         <line num="44" count="1" type="stmt"/>
-        <line num="45" count="1" type="stmt"/>
         <line num="46" count="1" type="stmt"/>
         <line num="50" count="1" type="stmt"/>
         <line num="52" count="1" type="stmt"/>

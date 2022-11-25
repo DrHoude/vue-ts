@@ -26,9 +26,9 @@ describe('test SideBar', ()=> {
         describe('case option === showToday', ()=> {
 
             it('should return true', async ()=> {
-                const date = new Date()
+          
                 await wrapper.vm.updateDateByOption('showToday')
-                const interval = { from:date, to:date }
+                const interval = { from:new Date(), to: new Date() }
         
                 expect((wrapper.emitted('updateDateInterval') as any)[0]![0]).toEqual(expect.objectContaining(interval))
 
@@ -50,12 +50,13 @@ describe('test SideBar', ()=> {
         })
 
         describe('case option === showWeek', () => {
-            it('should return true', async ()=> {
+            it('should return true',  ()=> {
                 const date = new Date()
                 date.setDate(date.getDate()-7)
+
                 const interval = {from: date, to: new Date()}
 
-                await wrapper.vm.updateDateByOption('showWeek')
+                wrapper.vm.updateDateByOption('showWeek')
                 expect((wrapper.emitted('updateDateInterval') as any)[0]![0]).toEqual(expect.objectContaining(interval))
 
 
@@ -138,19 +139,29 @@ describe('test SideBar', ()=> {
 
         describe('case option === showSixMonths', ()=>{
             it('should return true', async ()=> {
-                let from = new Date()
+                const from = new Date()
                 from.setMonth(from.getMonth()-6)
+
+                const interval = {from: from, to: new Date()}
+
                 await wrapper.vm.updateDateByOption('showSixMonths')
-                expect(wrapper.vm.updateInterval({from: from, to: new Date()})) 
+               
+
+                expect((wrapper.emitted('updateDateInterval') as any)[0]![0]).toEqual(expect.objectContaining(interval))
             })
         })
 
         describe('case option === showYear', ()=> {
             it('should return true', async ()=> {
-                let from = new Date()
+                const from = new Date()
                 from.setMonth(from.getMonth()-12)
+
+                const interval = {from: from, to: new Date()}
+
                 await wrapper.vm.updateDateByOption('showYear')
-                expect(wrapper.vm.updateInterval({from: from, to: new Date()})) 
+              
+
+                expect((wrapper.emitted('updateDateInterval') as any)[0]![0]).toEqual(expect.objectContaining(interval))
 
             })
         })
