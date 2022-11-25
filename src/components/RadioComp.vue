@@ -1,9 +1,6 @@
 <script setup lang="ts">
 
-
-
 const props = defineProps({
-    
     theme: String,
     name: String,
     value: String,
@@ -18,8 +15,15 @@ const props = defineProps({
      
     
         <div v-for="option in props.options" >
-            <input
-            :name="name" type="radio" :checked="props.value === option"  @change="$emit('radio-click', $event)" data-test="inpt"/>
+
+            <input 
+
+            data-test="input"
+            :name="name" type="radio" 
+            :checked="props.value === option"  
+            @change="$emit('radio-click', $event)"
+
+            />
             <label>{{option}}</label>
         </div>
     </div>

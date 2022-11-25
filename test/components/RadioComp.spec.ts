@@ -4,31 +4,38 @@ import { mount } from '@vue/test-utils'
 
 describe('test RadioComp', ()=> {
 
-    const from = new Date()
-    from.setDate(from.getDate() - 1)
-
-    const to = new Date()
-    to.setDate(to.getDate() + 2)
+ 
 
     const wrapper = mount(RadioComp as any , { 
         props: {
-            dateInterval: {
-                from,
-                to
-            }
-        },
+            options: ['first'],
+            value: ''
+           
+
+        }
+
+    
     })
 
-    describe('', () => {
-        let el = wrapper.find('input[data-test="inpt"]')
-        it('', () => {
-
-            el.trigger('click')
-            console.log(el)
-
-
+    describe('when the raion is clicked', () => {
+        it('should emit the "radio-click" event', async () => {
+            const el = wrapper.find('[data-test="input"]')
+            el.trigger('change')
+            expect(wrapper.emitted()).toHaveProperty('radio-click')
         })
     })
+
+    describe('when the value mathes an option', () => {
+        it('the option should be checked', async () => {
+            await wrapper.setProps({
+                value: 'first'
+            })
+            const el = wrapper.find('[data-test="input"]:checked')
+            expect(el).toBeDefined()
+        })
+    })
+
+  
 
 
     

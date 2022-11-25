@@ -2,16 +2,20 @@
 
 import { DateInterval } from '../types'
 import { PropType } from 'vue';
-
 import { formatDateFull } from '../utils';
 import { computed } from '@vue/reactivity';
 
-import { ref,Ref } from 'vue';
-
 
 const props = defineProps({
-    date: Date,
-    showTime:Boolean,
+    date: {
+        type: Date,
+        default: new Date()
+    },
+
+    showTime: {
+        type: Boolean,
+        default: true
+    },
 
 
     dateInterval: {
@@ -46,12 +50,12 @@ const getFormatedTimeFromDate = (date: Date) => `${formatTimeValue(date.getHours
 const fromTime = computed(()=> getFormatedTimeFromDate(props.dateInterval.from))
 const toTime = computed(()=> getFormatedTimeFromDate(props.dateInterval.to))
 
+
 const handleInputChange = (e: Event) => {
     const { value, name } = (e.target as HTMLInputElement)
-
+ 
     const newDateInterval = { ... props.dateInterval }
     
-
     const timeArr = value.split(':')
     newDateInterval[name as 'from' | 'to'].setHours(parseInt(timeArr[0]))
     newDateInterval[name as 'from' | 'to'].setMinutes(parseInt(timeArr[1]))
@@ -68,12 +72,12 @@ const handleInputChange = (e: Event) => {
 
             <div>
                 <label>{{from}} - </label>
-                <input type="time" :value="fromTime" name="from" @change="handleInputChange">
+                <input type="time" :value="fromTime" name="from" @change="handleInputChange" data-test="input">
             </div>
 
             <div>
                 <label>{{to}} - </label>
-                <input type="time" :value="toTime" name="to" @change="handleInputChange">
+                <input type="time" :value="toTime" name="to" @change="handleInputChange" data-test="input">
             </div>
            
         </div>

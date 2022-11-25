@@ -3,7 +3,12 @@
 import { ref } from 'vue';
 import { DateInterval } from '../types';
     const props = defineProps({
-        date: Date,
+        
+        date: {
+            type: Date,
+            default: new Date
+        },
+
         showMonths: Boolean,
         selectedOption: String
        
@@ -19,21 +24,13 @@ import { DateInterval } from '../types';
         (e:'updateSelectedOption',value:any):void
 
     }>()
-
-   
-
-
     function updateDate(date: Date) {
         emit('update-date', date )
-    
     }
 
     function updateInterval(value:DateInterval) {
         emit('updateDateInterval', value)
-
     }
-
-
 
     function updateDateByOption(option?: string) {
          let newDate: Date | undefined = props.date
@@ -110,12 +107,12 @@ import { DateInterval } from '../types';
         }
     }
 
-    function handleOptionClick(option?: string) {
+    function handleOptionClick(option: string | undefined) {
         updateDateByOption(option)
         emit('updateSelectedOption', option)
     }
 
-    function getOptionClass(option?: string) {
+    function getOptionClass(option: string | undefined) {
         return {"calendar-sideBar__item_selected": option === props.selectedOption }
     }
 
@@ -150,6 +147,7 @@ import { DateInterval } from '../types';
             <li v-for="(dayOption, index) in daysOptions" :key="index"
                 :class="getOptionClass(dayOption.key)" class="calendar-sideBar__item" 
                 @click="handleOptionClick(dayOption.key)"
+                data-test="optionElement"
             >
             <input type="button" :value="dayOption.value"  class=" calendar-sideBar__input"
             @mouseover="hover = true" @mouseleave="hover=false"></li>
@@ -158,7 +156,8 @@ import { DateInterval } from '../types';
         <ul v-else class="calendar-sideBar__content">
             <li v-for="(monthOption, index) in monthsOptions" :key="index"
                 :class="getOptionClass(monthOption.key)" class="calendar-sideBar__item" 
-                @click="handleOptionClick(monthOption.key)" >
+                @click="handleOptionClick(monthOption.key)"
+                data-test="optionElement" >
             <input  type="button" :value="monthOption.value"  class=" calendar-sideBar__input "></li>
         </ul>
                 

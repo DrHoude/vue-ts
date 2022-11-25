@@ -65,6 +65,8 @@
         (e:'updateDateInterval', dateInterval:DateInterval):void
         (e:'handleMouseDown', value:Date):void
         (e:'handleMouseEnter', value:Date):void
+        (e:'moveBack'):void
+        (e:'moveNext'):void
         // (e:'updateLast',value:boolean):void
     }>()
 

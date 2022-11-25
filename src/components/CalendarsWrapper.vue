@@ -25,6 +25,7 @@ const emit = defineEmits< {
     (e: 'update-date', value: Date):void
     (e: 'updateDateInterval', value: DateInterval): void
     (e: 'moveNext'):void
+    (e:'moveBack'):void
 }>()
 
 let isMouseDown = false;
@@ -89,7 +90,7 @@ function handleMouseEnterMonth(date: Date) {
                     :dateInterval="props.dateInterval"
                     @update-date ="updateDate" 
                     @moveBack="$emit('moveBack')"
-                    @updateDateInterval="(value) => $emit('updateDateInterval', value)"
+                   
                     @handle-mouse-down="handleMouseDown"
                     @handle-mouse-enter="handleMouseEnterDay"
                 />
@@ -102,7 +103,7 @@ function handleMouseEnterMonth(date: Date) {
                     :dateInterval="props.dateInterval"
                     @update-date="updateDate" 
                     @moveNext="$emit('moveNext')"
-                    @updateDateInterval="(value) => $emit('updateDateInterval', value)"
+                   
                     @handle-mouse-down="handleMouseDown"
                     @handle-mouse-enter="handleMouseEnterDay"
                 />

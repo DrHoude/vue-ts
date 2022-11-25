@@ -1,4 +1,4 @@
-import {CalendarsWrapper} from '../../src/components'
+import {CalendarsWrapper, DateCalendar} from '../../src/components'
 
 
 
@@ -19,16 +19,45 @@ describe('', () => {
         }
     })
 
-    it('', () => {
-        expect(wrapper)
+    describe('test emitted events in a child component',  ()=>{
 
+        describe('DateCalendar emit moveBack',() => {
+
+            it('should return true',async ()=> {
+                await wrapper.findComponent(DateCalendar as any).vm.$emit('moveBack')
+                expect(wrapper.emitted()).toHaveProperty('moveBack')
+            })
+        })
+
+        describe('DateCalendar emit update-date', ()=> {
+
+            it('', async ()=> {
+                await wrapper.findComponent(DateCalendar as any).vm.$emit('update-date')
+                expect(wrapper.emitted()).toHaveProperty('update-date')
+            })
+        })
+
+        describe('DateCalendar emit handleMouseDown',()=>{
+            it('', async ()=> {
+                const date = new Date()
+                date.setDate(date.getDate() - 1)
+                const interval = { from: date, to: date}
+                await wrapper.findComponent(DateCalendar as any).vm.$emit('handleMouseDown', date)
+               wrapper.vm.handleMouseDown()
+               expect((wrapper.emitted('updateDateInterval') as any)[0]![0]).toEqual(expect.objectContaining(interval))
+
+            })
+        })
     })
 
-    it('', ()=> {
-        // const el = wrapper.get('[data-test="calendar-from"]')
-        // el.trigger('click')
-        expect(wrapper.emitted('updateDateInterval'))
-    })    
+    describe('test updateInterval method', ()=> {
+       describe('called updateInterval method should emit updateDateInterval', () => {
+            it('should return true', ()=>{
+                wrapper.vm.updateInterval()
+                expect(wrapper.emitted()).toHaveProperty('updateDateInterval')
+            })
+       })
+    })
 })
 
 
