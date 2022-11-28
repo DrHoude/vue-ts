@@ -9,7 +9,7 @@ import { computed } from '@vue/reactivity';
 const props = defineProps({
     date: {
         type: Date,
-        default: new Date()
+        required: true
     },
 
     showTime: {
@@ -52,6 +52,8 @@ const toTime = computed(()=> getFormatedTimeFromDate(props.dateInterval.to))
 
 
 const handleInputChange = (e: Event) => {
+
+    console.log(e)
     const { value, name } = (e.target as HTMLInputElement)
  
     const newDateInterval = { ... props.dateInterval }

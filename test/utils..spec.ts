@@ -28,7 +28,7 @@ describe('utils file', () => {
     describe('formateDateFull', ()=> {
       
         it('should return string of date, hideTime: true', ()=> {
-            expect (formatDateFull(d1,{hideTime: true})).toBe(`Nov 25, 2022`)
+            expect (formatDateFull(d1,{hideTime: true})).toBe(`Nov 28, 2022`)
         })
 
         it('should return string of date,  hour > 0 && minutes > 0', ()=> {

@@ -54,12 +54,14 @@ const calendarFromShowingDate  = computed(() => {
 })
 
 function updateShowingDateBack() {
-    calendarToShowingDate.value =  props.showTypeDayMonth ? new Date(calendarToShowingDate.value.setFullYear(calendarToShowingDate.value.getFullYear() - 1)) : new Date(calendarToShowingDate.value.setMonth(calendarToShowingDate.value.getMonth() - 1)) 
+    calendarToShowingDate.value =  props.showTypeDayMonth ? new Date(calendarToShowingDate.value.setFullYear(calendarToShowingDate.value.getFullYear() - 1)) 
+    : new Date(calendarToShowingDate.value.setMonth(calendarToShowingDate.value.getMonth() - 1)) 
 }
 
 
 function updateShowingDateNext() {
-    calendarToShowingDate.value =  props.showTypeDayMonth ? new Date(calendarToShowingDate.value.setFullYear(calendarToShowingDate.value.getFullYear() + 1))  :  new Date(calendarToShowingDate.value.setMonth(calendarToShowingDate.value.getMonth() + 1)) 
+    calendarToShowingDate.value =  props.showTypeDayMonth ? new Date(calendarToShowingDate.value.setFullYear(calendarToShowingDate.value.getFullYear() + 1))  
+    : new Date(calendarToShowingDate.value.setMonth(calendarToShowingDate.value.getMonth() + 1)) 
 }
 
 

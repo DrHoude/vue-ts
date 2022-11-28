@@ -1,25 +1,54 @@
-import {CalendarsWrapper, DateCalendar} from '../../src/components'
+import {CalendarsWrapper, DateCalendar, MonthCalendar} from '../../src/components'
 
 
 
 import { mount } from '@vue/test-utils'
 
 
+describe('test SideBar', ()=> {
+    let wrapper: any
 
-describe('', () => {
-    const wrapper = mount(CalendarsWrapper as any, {
-        props: {
-            date: new Date(),
-            dateInterval: {
-                from: new Date(),
-                to: new Date()
-            },
-            calendarFromShowingDate: new Date(),
-            calendarToShowingDate: new Date(),
-        }
+    const from = new Date()
+    from.setDate(from.getDate()-10)
+    const to = new Date()
+
+    beforeEach(() => {
+        wrapper = mount(CalendarsWrapper as any, {
+            props: {
+                date: new Date(),
+                dateInterval: {
+                    from: from,
+                    to: to
+                },
+                calendarFromShowingDate: new Date(),
+                calendarToShowingDate: new Date(),
+                showTypeDayMonth: false
+
+              
+
+                
+            }
+        })
+    })
+    describe('test emitted events in child component MonthCalendar', ()=>{
+     
+
+
+
+        
+        // describe('MonthCalendar emit moveBack', ()=>{
+        //     it('should return true', async ()=>{
+        //         await wrapper.findComponent(MonthCalendar as any).vm.$emit('moveBack')
+        //         expect(wrapper.emitted()).toHaveProperty('moveBack')
+        //     })
+        // })
     })
 
-    describe('test emitted events in a child component',  ()=>{
+
+
+    describe('test emitted events in a child component DateCalendar',  ()=>{
+
+
 
         describe('DateCalendar emit moveBack',() => {
 
@@ -50,6 +79,12 @@ describe('', () => {
         })
     })
 
+
+
+   
+
+
+
     describe('test updateInterval method', ()=> {
        describe('called updateInterval method should emit updateDateInterval', () => {
             it('should return true', ()=>{
@@ -58,6 +93,44 @@ describe('', () => {
             })
        })
     })
+
+    describe('test handleMouseDown method', () => {
+
+        describe('should emit updateDateInterval', () => {
+
+            it('should return true', async () => {
+
+                const date = new Date()
+
+                await wrapper.vm.handleMouseDown(date)
+                const interval = { from: date, to: date }
+        
+                expect((wrapper.emitted('updateDateInterval') as any)[0]![0]).toEqual(expect.objectContaining(interval))
+            })
+
+        })
+    })
+
+    describe.skip(' test handleMouseEnterDay method ', () => {
+        describe('should emit updateDateInterval', () => {
+            it('should return true', async () => {
+                let date = new Date()
+                let lastDate = new Date()
+
+                await wrapper.vm.handleMouseEnterDay(date,lastDate)
+
+               
+                expect(wrapper.emitted()).toHaveProperty('moveNext')
+
+                expect(wrapper.emitted()).toHaveProperty('updateDateInterval')
+                
+            
+            })
+        })
+    })
+
+
+
 })
 
 

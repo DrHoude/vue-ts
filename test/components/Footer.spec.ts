@@ -19,19 +19,23 @@ describe('test Footer', ()=> {
         }
     })
 
-
-    describe.skip('', () => {
-        let input = wrapper.find('[data-test="input"]')
-
-        it('', () => {
-
-           
-
+    describe('test change event, should emit updateDateInterval event', () => {
+        it('should return true', () => {
+            let input = wrapper.find('[data-test="input"]')
             input.trigger('change')
-
             expect(wrapper.emitted()).toHaveProperty('updateDateInterval')
+        })
+    })
 
-            
+    describe('test formatTimeValue method', () => {
+
+        describe('value < 10 should return with zero before', ()=>{
+
+        })
+
+        it('should return true ',() => {
+            const value = wrapper.vm.formatTimeValue(9)
+            expect(value).toBe('09')
         })
     })
 

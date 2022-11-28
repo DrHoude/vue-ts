@@ -21,7 +21,7 @@ describe('test SideBar', ()=> {
         })
     })
 
-    describe('test updateDateByOption method', ()=> {
+    describe.skip('test updateDateByOption method', ()=> {
 
         describe('case option === showToday', ()=> {
 

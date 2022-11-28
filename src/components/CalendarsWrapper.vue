@@ -25,7 +25,7 @@ const emit = defineEmits< {
     (e: 'update-date', value: Date):void
     (e: 'updateDateInterval', value: DateInterval): void
     (e: 'moveNext'):void
-    (e:'moveBack'):void
+    (e: 'moveBack'):void
 }>()
 
 let isMouseDown = false;
@@ -39,7 +39,6 @@ function updateInterval(value:DateInterval) {
 }
 
 function handleMouseUp() {
-    console.log('mouseUp')
     removeEventListener('mouseup', handleMouseUp)
     isMouseDown = false;
 }
@@ -56,7 +55,6 @@ function handleMouseEnterDay(date: Date, lastDay: Date) {
     if (!dayCond) return
     const isLastDay = isSameDate(lastDay, date, 'day')
     if (isLastDay) {
-        console.log('yes')
         setTimeout(()=>emit('moveNext'),1000)
     }
     updateInterval({from: props.dateInterval.from, to: date})
@@ -90,7 +88,7 @@ function handleMouseEnterMonth(date: Date) {
                     :dateInterval="props.dateInterval"
                     @update-date ="updateDate" 
                     @moveBack="$emit('moveBack')"
-                   
+                    @updateDateInterval="(value) => $emit('updateDateInterval', value)" 
                     @handle-mouse-down="handleMouseDown"
                     @handle-mouse-enter="handleMouseEnterDay"
                 />
@@ -103,7 +101,7 @@ function handleMouseEnterMonth(date: Date) {
                     :dateInterval="props.dateInterval"
                     @update-date="updateDate" 
                     @moveNext="$emit('moveNext')"
-                   
+                    @updateDateInterval="(value) => $emit('updateDateInterval', value)"
                     @handle-mouse-down="handleMouseDown"
                     @handle-mouse-enter="handleMouseEnterDay"
                 />
