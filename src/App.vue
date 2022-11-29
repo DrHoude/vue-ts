@@ -29,7 +29,7 @@ const updateShowTypeTheme = (()=> {
 
   
 })
-console.log(showTypeTheme.value)
+
 
 </script>
 
@@ -38,6 +38,7 @@ console.log(showTypeTheme.value)
   <div class="app">
 
     <div>
+      <div>Theme:</div>
       <RadioCompVue name="radio4" :options="optionsTheme" :value="selectedTheme" @radio-click="updateShowTypeTheme"/>
 
       <GeneralConfigVue  
@@ -60,8 +61,9 @@ console.log(showTypeTheme.value)
 
 </template>
 
-<style>
+<style lang="scss">
 
+@import './style.scss';
 
 
 .dark {
